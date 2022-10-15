@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Main module"""
 from telegram import BotCommand
-from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler, Updater
+from telegram.ext import CommandHandler, Dispatcher, Updater
 
 from module.commands.start import start
 from module.commands.help import help_cmd
