@@ -1,0 +1,12 @@
+name: Create and publish a Docker image
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    uses: unict-dmi/reusable-workflows/.github/workflows/docker.yml@main
+    with:
+      repo_ref: ${{ github.repository }}
+

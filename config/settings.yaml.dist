@@ -1,0 +1,13 @@
+token: ""
+
+dev_group_chatid: 0
+admin_group: 0
+
+test:
+  api_hash: ''
+  api_id: -1
+  session: ''
+  tag: ''
+  token: ''
+  admin_group: ''
+  dev_group_chatid: ''
