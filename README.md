@@ -44,6 +44,7 @@ To test the bot with docker compose on Windows follow these steps:
 5) Next run ```docker run -v "/c/Users/your/absolute/path/ERSU-Bot/config/settings.yaml":"/ersubot/config/settings.yaml" ersubot```
 
 To test it with Linux follow the steps above to the point 4) and:
+
 5) Run ```$ docker run -v "/home/your/absolute/path/ERSU-Bot/config/settings.yaml":"/ersubot/config/settings.yaml" ersubot```
 
 
