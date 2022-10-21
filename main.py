@@ -6,6 +6,7 @@ from telegram.ext import CommandHandler, Dispatcher, Updater
 from module.commands.start import start
 from module.commands.help import help_cmd
 from module.commands.report import report
+from module.commands.ufficio_ersu import ufficio_ersu
 from module.shared import config_map
 
 
@@ -17,8 +18,9 @@ def add_commands(up: Updater) -> None:
     """
     commands = [
         BotCommand("start", "messaggio di benvenuto"),
-        BotCommand("help ", "help"),
+        BotCommand("help ", "ricevi aiuto sui comandi"),
         BotCommand("report", "segnala un problema"),
+        BotCommand("ufficioersu", "ricevi i contatti dell'Ersu")
     ]
     up.bot.set_my_commands(commands=commands)
 
@@ -33,6 +35,7 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CommandHandler('help', help_cmd))
     dp.add_handler(CommandHandler('report', report))
     dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('ufficioersu', ufficio_ersu))
 
 
 def main() -> None:
