@@ -1,7 +1,8 @@
-# start command
+"""/start command"""
 
 from telegram import Update
 from telegram.ext import CallbackContext
+from module.data.constants import START_CMD_TEXT
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -12,5 +13,4 @@ def start(update: Update, context: CallbackContext) -> None:
         update: update event
         context: context passed by the handler
     """
-    context.bot.sendMessage(chat_id=update.message.chat_id, text=
-        """Benvenuto! Questo bot è stato realizzato dagli studenti del Corso di Laurea in Informatica al fine di fornire uno strumento di supporto per chi usufruisce dei servizi ERSU. Per scoprire cosa puoi fare usa /help""")
+    context.bot.sendMessage(chat_id=update.message.chat_id, text=START_CMD_TEXT)
