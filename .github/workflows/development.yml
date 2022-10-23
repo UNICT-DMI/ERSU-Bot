@@ -33,8 +33,7 @@ jobs:
           if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
       - name: Setup environment
         run: |
-          mv config/settings.yaml.default config/settings.yaml
-          mv data/yaml/reactions.yaml.default data/yaml/reactions.yaml
+          mv config/settings.yaml.dist config/settings.yaml
       - name: Lint with pylint
         run: |
           pylint main.py module
