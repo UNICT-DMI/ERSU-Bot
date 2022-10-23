@@ -14,7 +14,7 @@ def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
 
     Args:
-        up (Updater): supplyed Updater
+        up (Updater): supplied Updater
     """
     commands = [
         BotCommand("start", "messaggio di benvenuto"),
