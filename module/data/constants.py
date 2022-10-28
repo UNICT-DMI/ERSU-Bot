@@ -68,3 +68,10 @@ Martedì e Giovedì ore 8.00-10.00 e 13.00-14.00.
 
 • RESIDENZA SAN MARZANO
 📞 095330868"""
+
+kb1 = 'Menù mensa 🍽' 
+kb2 = 'Contatti ERSU 📚'
+kb3 = 'Segnalazioni Rappresentanti 📬'
+kb4 = 'help ❔'
+
+keyboard = [[kb1, kb2],[kb3 , kb4]]
