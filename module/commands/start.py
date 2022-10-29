@@ -2,15 +2,9 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from module.data.constants import START_CMD_TEXT
-
-
-MENU_MENSA = 'Menù mensa 🍽' 
-CONTACT_ERSU = 'Contatti ERSU 📚'
-REPORT = 'Segnalazioni Rappresentanti 📬'
-HELP = 'help ❔'
+from module.data.constants import MENU_MENSA, CONTACT_ERSU, REPORT, HELP
 
 keyboard = [[MENU_MENSA, CONTACT_ERSU],[REPORT, HELP]]
-
 
 def start(update: Update, context: CallbackContext) -> None:
     """Called by the /start command.
