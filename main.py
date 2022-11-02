@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Main module"""
-from distutils.cmd import Command
-from warnings import filters
 from telegram import BotCommand
 from telegram.ext import CommandHandler, MessageHandler, Filters , Dispatcher, Updater
 
