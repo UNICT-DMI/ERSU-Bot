@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """Main module"""
 from telegram import BotCommand
-from telegram.ext import CommandHandler, Dispatcher, Updater
+from telegram.ext import CommandHandler, MessageHandler, Filters , Dispatcher, Updater
 
 from module.commands.start import start
 from module.commands.help import help_cmd
 from module.commands.report import report
 from module.commands.ufficio_ersu import ufficio_ersu
 from module.shared import config_map
-
+from module.data.constants import CONTACT_ERSU, REPORT, HELP
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
@@ -33,10 +33,14 @@ def add_handlers(dp: Dispatcher) -> None:
     """
     dp.add_handler(CommandHandler('chatid', lambda u, c: u.message.reply_text(u.message.chat_id)))
     dp.add_handler(CommandHandler('help', help_cmd))
+    dp.add_handler(MessageHandler(Filters.regex(HELP), help_cmd))
     dp.add_handler(CommandHandler('report', report))
+    dp.add_handler(MessageHandler(Filters.regex(REPORT), report))
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('ufficioersu', ufficio_ersu))
+    dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU), ufficio_ersu))
 
+    #
 
 def main() -> None:
     """Main function"""

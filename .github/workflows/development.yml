@@ -37,6 +37,6 @@ jobs:
       - name: Lint with pylint
         run: |
           pylint main.py module
-      - name: Test with pytest
-        run: |
-          pytest tests/unit/
+      # - name: Test with pytest
+      #   run: |
+      #     pytest tests/unit/

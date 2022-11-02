@@ -1,9 +1,7 @@
 """/help command"""
-
 from telegram import Update
 from telegram.ext import CallbackContext
 from module.data.constants import HELP_CMD_TEXT
-
 
 def help_cmd(update: Update, context: CallbackContext) -> None:
     """Called by the /help command.
@@ -14,3 +12,4 @@ def help_cmd(update: Update, context: CallbackContext) -> None:
         context: context passed by the handler
     """
     context.bot.sendMessage(chat_id=update.message.chat_id, text=HELP_CMD_TEXT)
+    
