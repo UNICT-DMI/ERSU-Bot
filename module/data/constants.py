@@ -70,7 +70,7 @@ Martedì e Giovedì ore 8.00-10.00 e 13.00-14.00.
 📞 095330868"""
 
 
-MENU_MENSA = 'Menù mensa 🍽' 
+MENU_MENSA = 'Menù mensa 🍽'
 CONTACT_ERSU = 'Contatti ERSU 📚'
 REPORT = 'Segnalazioni Rappresentanti 📬'
 HELP = 'help ❔'

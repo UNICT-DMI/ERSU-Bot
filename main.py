@@ -10,7 +10,7 @@ from module.commands.help import help_cmd
 from module.commands.report import report
 from module.commands.ufficio_ersu import ufficio_ersu
 from module.shared import config_map
-from module.data.constants import MENU_MENSA, CONTACT_ERSU, REPORT, HELP
+from module.data.constants import CONTACT_ERSU, REPORT, HELP
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
