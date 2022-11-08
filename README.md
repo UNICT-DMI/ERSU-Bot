@@ -56,4 +56,7 @@ To test the bot directly on your machine follow these steps:
 4) Run `$ python main.py` to start the bot
 
 ## Credits
-[Leonardo Mirabella](https://github.com/infrablue0)
+- [Pierpaolo Pecoraio](https://github.com/Pierpaolo791)
+- [Davide Carnemolla](https://github.com/daxcpp)
+- [Stefano Borzì](https://github.com/Helias)
+- [Leonardo Mirabella](https://github.com/infrablue0)
