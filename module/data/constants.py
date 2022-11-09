@@ -74,3 +74,6 @@ MENU_MENSA = 'Menù mensa 🍽'
 CONTACT_ERSU = 'Contatti ERSU 📚'
 REPORT = 'Segnalazioni Rappresentanti 📬'
 HELP = 'Help ❔'
+
+
+DB_PATH = "data/ERSU_DB.db"
