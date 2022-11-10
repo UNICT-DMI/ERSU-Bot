@@ -9,6 +9,7 @@ from module.commands.report import report
 from module.commands.ufficio_ersu import ufficio_ersu
 from module.shared import config_map
 from module.data.constants import CONTACT_ERSU, REPORT, HELP
+from module.data import setupDB
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
@@ -31,7 +32,7 @@ def add_handlers(dp: Dispatcher) -> None:
     Args:
         dp: supplied Dispatcher
     """
-    dp.add_handler(CommandHandler('chatid', lambda u, c: u.message.reply_text(u.message.chat_id)))
+    dp.add_handler(CommandHandler('chatid', lambda user, c: user.message.reply_text(user.message.chat_id)))
     dp.add_handler(CommandHandler('help', help_cmd))
     dp.add_handler(MessageHandler(Filters.regex(HELP), help_cmd))
     dp.add_handler(CommandHandler('report', report))
@@ -40,13 +41,12 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CommandHandler('ufficioersu', ufficio_ersu))
     dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU), ufficio_ersu))
 
-    #
-
 def main() -> None:
     """Main function"""
     updater = Updater(config_map['token'], request_kwargs={'read_timeout': 20, 'connect_timeout': 20}, use_context=True)
     add_commands(updater)
     add_handlers(updater.dispatcher)
+    setupDB()
 
     updater.start_polling()
     updater.idle()
