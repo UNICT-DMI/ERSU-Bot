@@ -59,4 +59,6 @@ To test the bot directly on your machine follow these steps:
 - [Pierpaolo Pecoraio](https://github.com/Pierpaolo791)
 - [Davide Carnemolla](https://github.com/daxcpp)
 - [Stefano Borzì](https://github.com/Helias)
+- [Ernesto Casablanca](https://github.com/TendTo)
+- [Damiano Coppola](https://github.com/DefEnge)
 - [Leonardo Mirabella](https://github.com/infrablue0)
