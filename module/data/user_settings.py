@@ -58,7 +58,6 @@ class UserSettings:
         if meal not in VALID_MEALS:
             raise ValueError("Expected meal to be lunch or dinner")
 
-        self.insert_user(chat_id)
         day_meal = day + '_' + meal
 
         with sqlite3.connect(DB_PATH) as con:
