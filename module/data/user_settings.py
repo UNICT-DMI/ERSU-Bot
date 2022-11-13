@@ -2,7 +2,6 @@ import sqlite3
 from .constants import DB_PATH
 from .constants import DAYS, MEALS, VALID_DAYS, VALID_MEALS
 
-
 class UserSettings:
     row_factory = lambda cursor, row: row if len(row) != 1 else row[0]
 
@@ -81,36 +80,6 @@ class UserSettings:
                 WHERE chat_id = {chat_id}
                 """)
 
-            cur.execute(f"""SELECT {day_meal}
-            FROM user_settings
-            WHERE chat_id = {chat_id}
-            """)
-            new_meal = cur.fetchall()
-            if new_meal == [(0, )]:
-                cur.execute("""DELETE FROM user_settings
-                WHERE chat_id = (?)
-                AND monday_lunch = 0
-                AND monday_dinner = 0
-
-                AND tuesday_lunch = 0
-                AND tuesday_dinner = 0
-
-                AND wednesday_lunch = 0
-                AND wednesday_dinner = 0
-
-                AND thursday_lunch = 0
-                AND thursday_dinner = 0
-
-                AND friday_lunch = 0
-                AND friday_dinner = 0
-
-                AND saturday_lunch = 0
-                AND saturday_dinner = 0
-
-                AND sunday_lunch = 0
-                AND sunday_dinner = 0
-                """, (chat_id, ))
-
     def get_user_settings(self, chat_id: int) -> list:
         with sqlite3.connect(DB_PATH) as con:
             cur = con.cursor()
@@ -143,3 +112,7 @@ class UserSettings:
             cur.execute("""DELETE FROM user_settings
                 WHERE chat_id = (?)
                 """, (chat_id, ))
+
+    def reset_user_settings(self, chat_id: int) -> None:
+        self.delete_user(chat_id)
+        self.insert_user(chat_id)
