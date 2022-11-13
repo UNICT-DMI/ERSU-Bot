@@ -1,5 +1,8 @@
 # pylint: disable=line-too-long
 """Constants used throughout the application"""
+from typing import Literal
+
+DB_PATH = "data/ERSU_DB.db"
 
 START_CMD_TEXT = "Benvenuto! Questo bot è stato realizzato dagli studenti del Corso di Laurea in Informatica al fine di fornire uno strumento di supporto per chi usufruisce dei servizi ERSU. Per scoprire cosa puoi fare usa /help"
 HELP_CMD_TEXT = """Telegram ERSU Bot
@@ -76,4 +79,7 @@ REPORT = 'Segnalazioni Rappresentanti 📬'
 HELP = 'Help ❔'
 
 
-DB_PATH = "data/ERSU_DB.db"
+DAYS = Literal['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+MEALS = Literal['lunch', 'dinner']
+VALID_DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
+VALID_MEALS = ('lunch', 'dinner')

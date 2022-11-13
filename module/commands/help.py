@@ -12,4 +12,3 @@ def help_cmd(update: Update, context: CallbackContext) -> None:
         context: context passed by the handler
     """
     context.bot.sendMessage(chat_id=update.message.chat_id, text=HELP_CMD_TEXT)
-    
