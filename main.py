@@ -9,8 +9,9 @@ from module.commands.help import help_cmd
 from module.commands.report import report
 from module.commands.ufficio_ersu import ufficio_ersu
 from module.commands.menu import menu
+from module.commands.menu_settings import menu_settings
 from module.shared import config_map
-from module.data.constants import CONTACT_ERSU, REPORT, HELP, MENU_MENSA
+from module.data.constants import CONTACT_ERSU, REPORT, HELP, MENU_MENSA, MENU_SETTINGS
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
@@ -23,7 +24,8 @@ def add_commands(up: Updater) -> None:
         BotCommand("help ", "ricevi aiuto sui comandi"),
         BotCommand("report", "segnala un problema"),
         BotCommand("ufficioersu", "ricevi i contatti dell'Ersu"),
-        BotCommand("menu", "ricevi il menù del giorno")
+        BotCommand("menu", "ricevi il menù del giorno"),
+        BotCommand("menu_settings", "imposta quando ricevere il menù")
     ]
     up.bot.set_my_commands(commands=commands)
 
@@ -45,6 +47,8 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU), ufficio_ersu))
     dp.add_handler(CommandHandler('menu', menu))
     dp.add_handler(MessageHandler(Filters.regex(MENU_MENSA), menu))
+    dp.add_handler(CommandHandler('menu_settings', menu_settings))
+    dp.add_handler(MessageHandler(Filters.regex(MENU_SETTINGS), menu_settings))
 
 def main() -> None:
     """Main function"""
