@@ -79,14 +79,19 @@ class UserSettings:
             """)
             return result.fetchall()
 
-    def get_user_settings(self, chat_id: int) -> list[int]:
+    def get_user_settings(self, chat_id: int) -> list:
         with sqlite3.connect(DB_PATH) as con:
             cur = con.cursor()
             result = cur.execute("""SELECT *
             FROM user_settings
             WHERE chat_id = (?)
-            """, (chat_id, ))
-            return (result.fetchall())[0]
+            """, (chat_id, )
+            )
+            temp = (result.fetchall())[0]
+            settings = [None] * 14
+            for var in range(0, 14):
+                settings[var] = temp[var + 1]
+            return settings
 
     def get_users_to_notify(self, day: DAYS, meal: MEALS) -> list[int]:
         if day not in VALID_DAYS:
