@@ -61,4 +61,4 @@ To test the bot directly on your machine follow these steps:
 - [Stefano Borzì](https://github.com/Helias)
 - [Ernesto Casablanca](https://github.com/TendTo)
 - [Damiano Coppola](https://github.com/DefEnge)
-- [Leonardo Mirabella](https://github.com/infrablue0)
+- [Leonardo Mirabella](https://github.com/infra-blue)

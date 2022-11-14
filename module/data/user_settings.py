@@ -11,19 +11,19 @@ class UserSettings:
             cur.execute("""CREATE TABLE IF NOT EXISTS user_settings (
                 chat_id INTEGER PRIMARY KEY,
                 monday_lunch INTEGER(1) NOT NULL DEFAULT 1,
-                monday_dinner INTEGER(1) NOT NULL DEFAULT 1,
+                monday_dinner INTEGER(1) NOT NULL DEFAULT 0,
 
                 tuesday_lunch INTEGER(1) NOT NULL DEFAULT 1,
-                tuesday_dinner INTEGER(1) NOT NULL DEFAULT 1,
+                tuesday_dinner INTEGER(1) NOT NULL DEFAULT 0,
 
                 wednesday_lunch INTEGER(1) NOT NULL DEFAULT 1,
-                wednesday_dinner INTEGER(1) NOT NULL DEFAULT 1,
+                wednesday_dinner INTEGER(1) NOT NULL DEFAULT 0,
 
                 thursday_lunch INTEGER(1) NOT NULL DEFAULT 1,
-                thursday_dinner INTEGER(1) NOT NULL DEFAULT 1,
+                thursday_dinner INTEGER(1) NOT NULL DEFAULT 0,
 
                 friday_lunch INTEGER(1) NOT NULL DEFAULT 1,
-                friday_dinner INTEGER(1) NOT NULL DEFAULT 1,
+                friday_dinner INTEGER(1) NOT NULL DEFAULT 0,
 
                 saturday_lunch INTEGER(1) NOT NULL DEFAULT 0,
                 saturday_dinner INTEGER(1) NOT NULL DEFAULT 0,
