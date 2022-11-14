@@ -10,20 +10,20 @@ class UserSettings:
             cur = con.cursor()
             cur.execute("""CREATE TABLE IF NOT EXISTS user_settings (
                 chat_id INTEGER PRIMARY KEY,
-                monday_lunch INTEGER(1) NOT NULL DEFAULT 0,
-                monday_dinner INTEGER(1) NOT NULL DEFAULT 0,
+                monday_lunch INTEGER(1) NOT NULL DEFAULT 1,
+                monday_dinner INTEGER(1) NOT NULL DEFAULT 1,
 
-                tuesday_lunch INTEGER(1) NOT NULL DEFAULT 0,
-                tuesday_dinner INTEGER(1) NOT NULL DEFAULT 0,
+                tuesday_lunch INTEGER(1) NOT NULL DEFAULT 1,
+                tuesday_dinner INTEGER(1) NOT NULL DEFAULT 1,
 
-                wednesday_lunch INTEGER(1) NOT NULL DEFAULT 0,
-                wednesday_dinner INTEGER(1) NOT NULL DEFAULT 0,
+                wednesday_lunch INTEGER(1) NOT NULL DEFAULT 1,
+                wednesday_dinner INTEGER(1) NOT NULL DEFAULT 1,
 
-                thursday_lunch INTEGER(1) NOT NULL DEFAULT 0,
-                thursday_dinner INTEGER(1) NOT NULL DEFAULT 0,
+                thursday_lunch INTEGER(1) NOT NULL DEFAULT 1,
+                thursday_dinner INTEGER(1) NOT NULL DEFAULT 1,
 
-                friday_lunch INTEGER(1) NOT NULL DEFAULT 0,
-                friday_dinner INTEGER(1) NOT NULL DEFAULT 0,
+                friday_lunch INTEGER(1) NOT NULL DEFAULT 1,
+                friday_dinner INTEGER(1) NOT NULL DEFAULT 1,
 
                 saturday_lunch INTEGER(1) NOT NULL DEFAULT 0,
                 saturday_dinner INTEGER(1) NOT NULL DEFAULT 0,
@@ -42,15 +42,6 @@ class UserSettings:
             user_exists = cur.fetchall()
             if len(user_exists) == 0:
                 cur.execute("INSERT INTO user_settings (chat_id) values (?)", (chat_id, ))
-
-    def get_users(self) -> list:
-        with sqlite3.connect(DB_PATH) as con:
-            con.row_factory = self.row_factory
-            cur = con.cursor()
-            res = cur.execute("""SELECT chat_id
-            FROM user_settings
-            """)
-            return res.fetchall()
 
     def set_meal(self, chat_id: int, day: DAYS, meal: MEALS) -> None:
         if day not in VALID_DAYS:
@@ -79,14 +70,23 @@ class UserSettings:
                 WHERE chat_id = {chat_id}
                 """)
 
-    def get_user_settings(self, chat_id: int) -> list:
+    def get_users(self) -> list[int]:
+        with sqlite3.connect(DB_PATH) as con:
+            con.row_factory = self.row_factory
+            cur = con.cursor()
+            result = cur.execute("""SELECT chat_id
+            FROM user_settings
+            """)
+            return result.fetchall()
+
+    def get_user_settings(self, chat_id: int) -> list[int]:
         with sqlite3.connect(DB_PATH) as con:
             cur = con.cursor()
-            res = cur.execute("""SELECT *
+            result = cur.execute("""SELECT *
             FROM user_settings
             WHERE chat_id = (?)
             """, (chat_id, ))
-            return (res.fetchall())[0]
+            return (result.fetchall())[0]
 
     def get_users_to_notify(self, day: DAYS, meal: MEALS) -> list[int]:
         if day not in VALID_DAYS:
@@ -113,5 +113,7 @@ class UserSettings:
                 """, (chat_id, ))
 
     def reset_user_settings(self, chat_id: int) -> None:
-        self.delete_user(chat_id)
-        self.insert_user(chat_id)
+        with sqlite3.connect(DB_PATH) as con:
+            cur = con.cursor()
+            cur.execute("""REPLACE INTO user_settings
+            values ((?), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)""", (chat_id, ))
