@@ -87,3 +87,6 @@ DAYS = Literal['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday
 MEALS = Literal['lunch', 'dinner']
 VALID_DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
 VALID_MEALS = ('lunch', 'dinner')
+
+#callbackquery handler data
+DAYS_MEAL = '(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)'
