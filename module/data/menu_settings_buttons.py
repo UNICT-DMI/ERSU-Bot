@@ -1,5 +1,5 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, ContextTypes
+from telegram.ext import CallbackContext
 from module.data.user_settings import UserSettings
 
 from module.data.constants import SYMBOLS, EMPTY
@@ -64,6 +64,7 @@ def generate_keyboard(settings: list) -> list:
 def set_meal_button(update: Update, context: CallbackContext) -> None:
     menu_set = UserSettings()
     query = update.callback_query
+    context.bot.answer_callback_query(callback_query_id=query.id)
 
     day_menu = (update.callback_query.data).split("_")
     menu_set.set_meal(query.message.chat_id, day_menu[0], day_menu[1])
@@ -78,6 +79,7 @@ def set_meal_button(update: Update, context: CallbackContext) -> None:
 def reset_button(update: Update, context: CallbackContext) -> None:
     menu_set = UserSettings()
     query = update.callback_query
+    context.bot.answer_callback_query(callback_query_id=query.id)
 
     menu_set.reset_user_settings(query.message.chat_id)
     settings = menu_set.get_user_settings(query.message.chat_id)
@@ -90,5 +92,7 @@ def reset_button(update: Update, context: CallbackContext) -> None:
 
 def close_button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
+    context.bot.answer_callback_query(callback_query_id=query.id)
+
     context.bot.deleteMessage(chat_id = query.message.chat_id,
                                     message_id = query.message.message_id)
