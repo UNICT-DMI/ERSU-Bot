@@ -12,7 +12,7 @@ from module.commands.menu import menu
 from module.commands.menu_settings import menu_settings
 from module.data.menu_settings_buttons import  set_meal_button, reset_button, close_button
 from module.shared import config_map
-from module.data.constants import CONTACT_ERSU, REPORT, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL
+from module.data.constants import CONTACT_ERSU, REPORT, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
@@ -51,7 +51,7 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CommandHandler('menu_settings', menu_settings))
     dp.add_handler(MessageHandler(Filters.regex(MENU_SETTINGS), menu_settings))
 
-    dp.add_handler(CallbackQueryHandler(set_meal_button, pattern = DAYS_MEAL))
+    dp.add_handler(CallbackQueryHandler(set_meal_button, pattern = DAYS_MEAL_REGEX))
     dp.add_handler(CallbackQueryHandler(reset_button, pattern = 'reset'))
     dp.add_handler(CallbackQueryHandler(close_button, pattern = 'close_settings'))
 
@@ -60,6 +60,7 @@ def add_jobs(dp: Dispatcher) -> None:
     Args:
         dp: supplyed Dispatcher
     """
+    
 
 def main() -> None:
     """Main function"""

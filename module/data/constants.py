@@ -82,6 +82,8 @@ MENU_SETTINGS = "Impostazioni Menù Mensa ⚙️"
 
 CROSS = "❌"
 CHECK = "✅"
+SYMBOLS = [CROSS, CHECK]
+EMPTY = 0
 
 DAYS = Literal['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 MEALS = Literal['lunch', 'dinner']
@@ -89,7 +91,7 @@ VALID_DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
 VALID_MEALS = ('lunch', 'dinner')
 
 #callbackquery handler data
-DAYS_MEAL = '(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)'
+DAYS_MEAL_REGEX = '(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)'
 
 #correct link format for ERSU news
-ERSU_LINK_REGEX= "(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
+ERSU_LINK_REGEX= '(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/'

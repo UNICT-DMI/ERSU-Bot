@@ -2,56 +2,56 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, ContextTypes
 from module.data.user_settings import UserSettings
 
-from module.data.constants import CROSS, CHECK
+from module.data.constants import SYMBOLS, EMPTY
 
 def generate_keyboard(settings: list) -> list:
     keyboard = [
         [
-            InlineKeyboardButton("Giorni", callback_data = "0"),
-            InlineKeyboardButton("Pranzo", callback_data = "0"),
-            InlineKeyboardButton("Cena", callback_data = "0")
+            InlineKeyboardButton("Giorni", callback_data = EMPTY),
+            InlineKeyboardButton("Pranzo", callback_data = EMPTY),
+            InlineKeyboardButton("Cena", callback_data = EMPTY)
         ],
 
         [
-            InlineKeyboardButton("Lunedì", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[0] == 0 else CHECK, callback_data = "monday_lunch"),
-            InlineKeyboardButton(CROSS if settings[1] == 0 else CHECK, callback_data = "monday_dinner")
+            InlineKeyboardButton("Lunedì", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[0]], callback_data = "monday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[1]], callback_data = "monday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Martedì", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[2] == 0 else CHECK, callback_data = "tuesday_lunch"),
-            InlineKeyboardButton(CROSS if settings[3] == 0 else CHECK, callback_data = "tuesday_dinner")
+            InlineKeyboardButton("Martedì", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[2]], callback_data = "tuesday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[3]], callback_data = "tuesday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Mercoledì", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[4] == 0 else CHECK, callback_data = "wednesday_lunch"),
-            InlineKeyboardButton(CROSS if settings[5] == 0 else CHECK, callback_data = "wednesday_dinner")
+            InlineKeyboardButton("Mercoledì", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[4]], callback_data = "wednesday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[5]], callback_data = "wednesday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Giovedì", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[6] == 0 else CHECK, callback_data = "thursday_lunch"),
-            InlineKeyboardButton(CROSS if settings[7] == 0 else CHECK, callback_data = "thursday_dinner")
+            InlineKeyboardButton("Giovedì", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[6]], callback_data = "thursday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[7]], callback_data = "thursday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Venerdì", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[8] == 0 else CHECK, callback_data = "friday_lunch"),
-            InlineKeyboardButton(CROSS if settings[9] == 0 else CHECK, callback_data = "friday_dinner")
+            InlineKeyboardButton("Venerdì", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[8]], callback_data = "friday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[9]], callback_data = "friday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Sabato", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[10] == 0 else CHECK, callback_data = "saturday_lunch"),
-            InlineKeyboardButton(CROSS if settings[11] == 0 else CHECK, callback_data = "saturday_dinner")
+            InlineKeyboardButton("Sabato", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[10]], callback_data = "saturday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[11]], callback_data = "saturday_dinner")
         ],
 
         [
-            InlineKeyboardButton("Domenica", callback_data = "0"),
-            InlineKeyboardButton(CROSS if settings[12] == 0 else CHECK, callback_data = "sunday_lunch"),
-            InlineKeyboardButton(CROSS if settings[13] == 0 else CHECK, callback_data = "sunday_dinner")
+            InlineKeyboardButton("Domenica", callback_data = EMPTY),
+            InlineKeyboardButton(SYMBOLS[settings[12]], callback_data = "sunday_lunch"),
+            InlineKeyboardButton(SYMBOLS[settings[13]], callback_data = "sunday_dinner")
         ],
 
         [
