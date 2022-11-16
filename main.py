@@ -55,16 +55,17 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CallbackQueryHandler(reset_button, pattern = 'reset'))
     dp.add_handler(CallbackQueryHandler(close_button, pattern = 'close_settings'))
 
-def add_jobs(dp: Dispatcher) -> None:
-    """Schedule the jobs in the JobQueue
-    Args:
-        dp: supplyed Dispatcher
-    """
-    
+#def add_jobs(dp: Dispatcher) -> None:
+#    """Schedule the jobs in the JobQueue
+#    Args:
+#        dp: supplyed Dispatcher
+#    """
 
 def main() -> None:
     """Main function"""
-    updater = Updater(config_map['token'], request_kwargs = {'read_timeout': 20, 'connect_timeout': 20}, use_context = True)
+    updater = Updater(config_map['token'],
+        request_kwargs = {'read_timeout': 20, 'connect_timeout': 20},
+            use_context = True)
     add_commands(updater)
     add_handlers(updater.dispatcher)
     add_jobs(updater.dispatcher)

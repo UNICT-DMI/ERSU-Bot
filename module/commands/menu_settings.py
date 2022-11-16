@@ -1,10 +1,9 @@
 """ /menu_settings command """
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler, ContextTypes
+from telegram import InlineKeyboardMarkup, Update
 from module.data.user_settings import UserSettings
 from module.data.menu_settings_buttons import generate_keyboard
 
-def menu_settings(update: Update, context: CallbackContext) -> None:
+def menu_settings(update: Update) -> None:
     menu_set = UserSettings()
     menu_set.insert_user(update.message.chat_id)
     settings = menu_set.get_user_settings(update.message.chat_id)

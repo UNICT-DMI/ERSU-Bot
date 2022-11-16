@@ -1,7 +1,7 @@
+"""All keyboard utils for /menu_settuings command"""
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 from module.data.user_settings import UserSettings
-
 from module.data.constants import SYMBOLS, EMPTY
 
 def generate_keyboard(settings: list) -> list:

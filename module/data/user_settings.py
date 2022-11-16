@@ -1,9 +1,12 @@
+"""Database class"""
 import sqlite3
 from .constants import DB_PATH
 from .constants import DAYS, MEALS, VALID_DAYS, VALID_MEALS
 
+"""A class to easy access the database and storing all user preferences"""
 class UserSettings:
-    row_factory = lambda cursor, row: row if len(row) != 1 else row[0]
+    def row_factory(self, cursor, row) -> list:
+        return row if len(row) != 1 else row[0]
 
     def setup(self) -> None:
         with sqlite3.connect(DB_PATH) as con:
@@ -87,10 +90,8 @@ class UserSettings:
             WHERE chat_id = (?)
             """, (chat_id, )
             )
-            temp = (result.fetchall())[0]
-            settings = [None] * 14
-            for var in range(0, 14):
-                settings[var] = temp[var + 1]
+            tmp = (result.fetchall())[0]
+            settings = [tmp[var+1] for var in range(14)]
             return settings
 
     def get_users_to_notify(self, day: DAYS, meal: MEALS) -> list[int]:
