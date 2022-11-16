@@ -4,8 +4,10 @@ import re
 import hashlib
 from .constants import DB_PATH, ERSU_LINK_REGEX
 
-"""A class to easy access the database and storing all news link"""
 class News:
+    """
+        A class to easy access the database and storing all news link
+    """
     def setup(self) -> None:
         with sqlite3.connect(DB_PATH) as con:
             cur = con.cursor()

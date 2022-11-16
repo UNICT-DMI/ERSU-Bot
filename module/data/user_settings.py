@@ -3,8 +3,10 @@ import sqlite3
 from .constants import DB_PATH
 from .constants import DAYS, MEALS, VALID_DAYS, VALID_MEALS
 
-"""A class to easy access the database and storing all user preferences"""
 class UserSettings:
+    """
+        A class to easy access the database and storing all user preferences
+    """
     def row_factory(self, cursor, row) -> list:
         return row if len(row) != 1 else row[0]
 

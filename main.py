@@ -55,11 +55,11 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CallbackQueryHandler(reset_button, pattern = 'reset'))
     dp.add_handler(CallbackQueryHandler(close_button, pattern = 'close_settings'))
 
-#def add_jobs(dp: Dispatcher) -> None:
-#    """Schedule the jobs in the JobQueue
-#    Args:
-#        dp: supplyed Dispatcher
-#    """
+def add_jobs(dp: Dispatcher) -> None:
+    """Schedule the jobs in the JobQueue
+    Args:
+        dp: supplyed Dispatcher
+    """
 
 def main() -> None:
     """Main function"""
@@ -68,8 +68,6 @@ def main() -> None:
             use_context = True)
     add_commands(updater)
     add_handlers(updater.dispatcher)
-    add_jobs(updater.dispatcher)
-
     setup_db()
 
     updater.start_polling()
