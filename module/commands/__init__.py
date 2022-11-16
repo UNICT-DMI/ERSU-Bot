@@ -4,3 +4,5 @@ from .help import help_cmd
 from .report import report
 from .start import start
 from .ufficio_ersu import ufficio_ersu
+from .menu import menu
+from .menu_settings import menu_settings
