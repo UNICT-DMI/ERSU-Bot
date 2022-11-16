@@ -22,8 +22,7 @@ def reply(update: Update, context: CallbackContext) -> None:
         context.bot.sendMessage(chat_id=chat_id, text="Errore! Solo gli amministratori possono rispondere ai messaggi!")
     else:
         if context.args:
-            context.bot.sendMessage(chat_id=reply_chat_id, text="Messaggio dal rappresentante:")
-            context.bot.sendMessage(chat_id=reply_chat_id, text=(' '.join(context.args)))
+            context.bot.sendMessage(chat_id=reply_chat_id, text="Messaggio dal rappresentante:\n" + (' '.join(context.args)))
         else:
             context.bot.sendMessage(
                 chat_id=chat_id,
