@@ -5,6 +5,7 @@ from module.data.user_settings import UserSettings
 from module.data.menu_settings_buttons import generate_keyboard
 
 def menu_settings(update: Update, context: CallbackContext) -> None:
+    # pylint: disable=unused-argument
     context = context
     menu_set = UserSettings()
     menu_set.insert_user(update.message.chat_id)

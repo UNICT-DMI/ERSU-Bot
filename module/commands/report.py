@@ -1,4 +1,3 @@
-# pylint: skip-file
 """/report command"""
 
 from telegram import Update
