@@ -7,13 +7,12 @@ from module.data import setup_db
 from module.commands.start import start
 from module.commands.help import help_cmd
 from module.commands.report import report
-from module.commands.reply import reply
 from module.commands.ufficio_ersu import ufficio_ersu
 from module.commands.menu import menu
 from module.commands.menu_settings import menu_settings
 from module.data.menu_settings_buttons import  set_meal_button, reset_button, close_button
 from module.shared import config_map
-from module.data.constants import CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX
+from module.data.constants import CONTACT_ERSU, REPORT, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX
 
 def add_commands(up: Updater) -> None:
     """Adds the list of commands with their description to the bot
@@ -25,7 +24,6 @@ def add_commands(up: Updater) -> None:
         BotCommand("start", "messaggio di benvenuto"),
         BotCommand("help ", "ricevi aiuto sui comandi"),
         BotCommand("report", "segnala un problema"),
-        BotCommand("reply", "rispondi ad una segnalazione"),
         BotCommand("ufficioersu", "ricevi i contatti dell'Ersu"),
         BotCommand("menu", "ricevi il menù del giorno"),
         BotCommand("menu_settings", "imposta quando ricevere il menù")
@@ -41,17 +39,17 @@ def add_handlers(dp: Dispatcher) -> None:
     """
 
     dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(CommandHandler('chatid', lambda u, c: u.message.reply_text(str(u.message.chat_id))))
+    dp.add_handler(CommandHandler('chatid', lambda u, c: u.message.reply_text(u.message.chat_id)))
     dp.add_handler(CommandHandler('help', help_cmd))
     dp.add_handler(MessageHandler(Filters.regex(HELP), help_cmd))
     dp.add_handler(CommandHandler('report', report))
+    dp.add_handler(MessageHandler(Filters.regex(REPORT), report))
     dp.add_handler(CommandHandler('ufficioersu', ufficio_ersu))
     dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU), ufficio_ersu))
     dp.add_handler(CommandHandler('menu', menu))
     dp.add_handler(MessageHandler(Filters.regex(MENU_MENSA), menu))
     dp.add_handler(CommandHandler('menu_settings', menu_settings))
     dp.add_handler(MessageHandler(Filters.regex(MENU_SETTINGS), menu_settings))
-    dp.add_handler(CommandHandler('reply', reply))
 
     dp.add_handler(CallbackQueryHandler(set_meal_button, pattern = DAYS_MEAL_REGEX))
     dp.add_handler(CallbackQueryHandler(reset_button, pattern = 'reset'))

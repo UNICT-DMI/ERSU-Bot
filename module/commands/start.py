@@ -4,7 +4,7 @@ from telegram.ext import CallbackContext
 from module.data.constants import START_CMD_TEXT
 from module.data.constants import MENU_MENSA, CONTACT_ERSU, REPORT, HELP, MENU_SETTINGS
 
-keyboard = [[MENU_MENSA, MENU_SETTINGS],[CONTACT_ERSU, HELP]]
+keyboard = [[MENU_MENSA, MENU_SETTINGS],[CONTACT_ERSU, REPORT], [HELP]]
 
 def start(update: Update, context: CallbackContext) -> None:
     """Called by the /start command.
