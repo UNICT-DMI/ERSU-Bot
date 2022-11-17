@@ -21,18 +21,15 @@ def add_commands(up: Updater) -> None:
     Args:
         up (Updater): supplied Updater
     """
-    commands = []
-    if Chat.type == Chat.PRIVATE:
-        commands = [
-            BotCommand("start", "messaggio di benvenuto"),
-            BotCommand("help ", "ricevi aiuto sui comandi"),
-            BotCommand("report", "segnala un problema"),
-            BotCommand("ufficioersu", "ricevi i contatti dell'Ersu"),
-            BotCommand("menu", "ricevi il menù del giorno"),
-            BotCommand("menu_settings", "imposta quando ricevere il menù")
-        ]
-    elif Chat.type in (Chat.GROUP, Chat.SUPERGROUP):
-        commands = [BotCommand("reply", "rispondi ad una segnalazione")]
+    commands = [
+        BotCommand("start", "messaggio di benvenuto"),
+        BotCommand("help ", "ricevi aiuto sui comandi"),
+        BotCommand("report", "segnala un problema"),
+        BotCommand("reply", "rispondi ad una segnalazione"),
+        BotCommand("ufficioersu", "ricevi i contatti dell'Ersu"),
+        BotCommand("menu", "ricevi il menù del giorno"),
+        BotCommand("menu_settings", "imposta quando ricevere il menù")
+    ]
     up.bot.set_my_commands(commands=commands)
 
 
