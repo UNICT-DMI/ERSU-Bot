@@ -18,21 +18,23 @@ def report(update: Update, context: CallbackContext) -> None:
 
     if not chat_user.username:
         context.bot.sendMessage(chat_id=chat_id, text="Errore! Imposta un username!")
-    else:
-        if context.args:
-            message = "⚠ Report ⚠\n" f"id: {chat_id}\nUsername: @{chat_user.username}\n"
+        return
 
-            if chat_user.first_name is not None:
-                message += f"Nome: {chat_user.first_name}\n"
-            if chat_user.last_name is not None:
-                message += f"Cognome: {chat_user.last_name}\n"
+    if context.args:
+        message = "⚠ Report ⚠\n" f"id: {chat_id}\nUsername: @{chat_user.username}\n"
 
-            message += f"Segnalazione:\n{user_report_message[8:]}\n"
+        if chat_user.first_name is not None:
+            message += f"Nome: {chat_user.first_name}\n"
+        if chat_user.last_name is not None:
+            message += f"Cognome: {chat_user.last_name}\n"
 
-            context.bot.sendMessage(chat_id=config_map["admin_group"], text=message)
-            context.bot.sendMessage(chat_id=chat_id, text="Segnalazione inviata!")
-        else:
-            context.bot.sendMessage(
-                chat_id=chat_id,
-                text="Errore. Invia un report con\n/report <messaggio>",
-            )
+        message += f"Segnalazione:\n{user_report_message[8:]}\n"
+
+        context.bot.sendMessage(chat_id=config_map["admin_group"], text=message)
+        context.bot.sendMessage(chat_id=chat_id, text="Segnalazione inviata!")
+        return
+
+    context.bot.sendMessage(
+        chat_id=chat_id,
+        text="Errore. Invia un report con\n/report <messaggio>",
+    )
