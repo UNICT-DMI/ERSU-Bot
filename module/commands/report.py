@@ -1,7 +1,8 @@
 """/report command"""
-from module.shared import config_map
 from telegram import Update
 from telegram.ext import CallbackContext
+
+from module.shared import config_map
 
 def report(update: Update, context: CallbackContext) -> None:
     """Called by the /report command.

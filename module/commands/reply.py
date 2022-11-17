@@ -2,7 +2,6 @@
 import re
 from telegram import Update
 from telegram.ext import CallbackContext
-from module.shared import config_map
 from module.data.constants import CHAT_ID_REGEX
 
 def reply(update: Update, context: CallbackContext) -> None:

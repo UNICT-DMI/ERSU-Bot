@@ -31,7 +31,7 @@ def add_commands(up: Updater) -> None:
             BotCommand("menu", "ricevi il menù del giorno"),
             BotCommand("menu_settings", "imposta quando ricevere il menù")
         ]
-    elif Chat.type == Chat.GROUP or Chat.type == Chat.SUPERGROUP:
+    elif Chat.type in (Chat.GROUP, Chat.SUPERGROUP):
         commands = [BotCommand("reply", "rispondi ad una segnalazione")]
     up.bot.set_my_commands(commands=commands)
 
