@@ -74,27 +74,37 @@ Martedì e Giovedì ore 8.00-10.00 e 13.00-14.00.
 📞 095330868"""
 
 
-MENU_MENSA = 'Menù mensa 🍽'
-CONTACT_ERSU = 'Contatti ERSU 📚'
-REPORT = 'Segnalazioni Rappresentanti 📬'
-HELP = 'Help ❔'
+MENU_MENSA = "Menù mensa 🍽"
+CONTACT_ERSU = "Contatti ERSU 📚"
+REPORT = "Segnalazioni Rappresentanti 📬"
+HELP = "Help ❔"
 MENU_SETTINGS = "Impostazioni Menù Mensa ⚙️"
 
 CROSS = "❌"
 CHECK = "✅"
 SYMBOLS = [CROSS, CHECK]
 EMPTY = 0
+USER_EMPTY_SETTINGS = [0] * 14
 
-DAYS = Literal['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-MEALS = Literal['lunch', 'dinner']
-VALID_DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
-VALID_MEALS = ('lunch', 'dinner')
+DAYS = Literal["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+MEALS = Literal["lunch", "dinner"]
+VALID_DAYS = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+VALID_MEALS = ("lunch", "dinner")
+DAYS_TRANSLATION = {
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+}
 
-#callbackquery handler data
-DAYS_MEAL_REGEX = r'(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)'
+# callbackquery handler data
+DAYS_MEAL_REGEX = r"(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)"
 
-#correct link format for ERSU news
-ERSU_LINK_REGEX = r'(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/'
+# correct link format for ERSU news
+ERSU_LINK_REGEX = r"(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
 
-#get chat_id from a report message
-CHAT_ID_REGEX = r'(id: )([0-9]+)'
+# get chat_id from a report message
+CHAT_ID_REGEX = r"(id: )([0-9]+)"
