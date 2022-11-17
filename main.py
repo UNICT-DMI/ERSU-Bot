@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Main module"""
-from telegram import BotCommand, Chat
+from telegram import BotCommand
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters , Dispatcher, Updater
 
 from module.data import setup_db
