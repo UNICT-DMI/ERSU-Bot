@@ -40,6 +40,22 @@ class UserSettings:
                 )"""
             )
 
+    def set_meal(self, chat_id: int, day: DAYS, meal: MEALS) -> None:
+        if day not in VALID_DAYS:
+            raise ValueError("Parameter day must be a valid day")
+        if meal not in VALID_MEALS:
+            raise ValueError("Expected meal to be lunch or dinner")
+
+        day_meal = f"{day}_{meal}"
+
+        with sqlite3.connect(DB_PATH) as con:
+            cur = con.cursor()
+            cur.execute(
+                f"INSERT INTO user_settings (chat_id, {day_meal}) values (?, 1)"
+                f"ON CONFLICT(chat_id) DO UPDATE SET {day_meal} = 1 - user_settings.{day_meal}",
+                (chat_id,),
+            )
+
     def get_users(self) -> list[int]:
         with sqlite3.connect(DB_PATH) as con:
             con.row_factory = self.row_factory
@@ -93,23 +109,3 @@ class UserSettings:
                 """,
                 (chat_id,),
             )
-
-    def set_meal(self, chat_id: int, day: DAYS, meal: MEALS) -> None:
-        if day not in VALID_DAYS:
-            raise ValueError("Parameter day must be a valid day")
-        if meal not in VALID_MEALS:
-            raise ValueError("Expected meal to be lunch or dinner")
-
-        day_meal = f"{day}_{meal}"
-
-        with sqlite3.connect(DB_PATH) as con:
-            cur = con.cursor()
-            cur.execute(
-                f"INSERT INTO user_settings (chat_id, {day_meal}) values (?, 1)"
-                f"ON CONFLICT(chat_id) DO UPDATE SET {day_meal} = 1 - user_settings.{day_meal}",
-                (chat_id,),
-            )
-
-        settings = self.get_user_settings(chat_id)
-        if settings is None:
-            self.delete_user(chat_id)
