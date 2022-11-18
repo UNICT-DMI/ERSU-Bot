@@ -1,8 +1,8 @@
-# pylint: skip-file
 """/report command"""
-
 from telegram import Update
 from telegram.ext import CallbackContext
+from module.shared import config_map
+
 
 def report(update: Update, context: CallbackContext) -> None:
     """Called by the /report command.
@@ -12,27 +12,29 @@ def report(update: Update, context: CallbackContext) -> None:
         update: update event
         context: context passed by the handler
     """
-    #getting chat_id and User object of the sender
     chat_id = update.message.chat_id
     chat_user = update.message.from_user
+    user_report_message = update.message.text
 
     if not chat_user.username:
-        context.bot.sendMessage(chat_id=chat_id, text = "")
-    else:
-        if context.args:
-            message = "⚠ Report ⚠\n"\
-                        f"Username: @{chat_user.username}\n"
+        context.bot.sendMessage(chat_id=chat_id, text="Errore! Imposta un username!")
+        return
 
-            if chat_user.first_name is not None:
-                message += f"Nome/Name: {chat_user.first_name}\n"
-            if chat_user.last_name is not None:
-                message += f"Cognome/Surname: {chat_user.last_name}\n"
+    if context.args:
+        message = "⚠ Report ⚠\n" f"id: {chat_id}\nUsername: @{chat_user.username}\n"
 
-            message += f"Segnalazione/Content: {' '.join(context.args)}\n"
+        if chat_user.first_name is not None:
+            message += f"Nome: {chat_user.first_name}\n"
+        if chat_user.last_name is not None:
+            message += f"Cognome: {chat_user.last_name}\n"
 
-            context.bot.sendMessage(chat_id=config_map['representatives_group'], text=message)
-            context.bot.sendMessage(chat_id=chat_id,
-                                    text=get_locale(locale, TEXT_IDS.REPORT_RESPONSE_TEXT_ID).replace(PLACE_HOLDER, message))
-        else:
-            context.bot.sendMessage(chat_id=chat_id,
-                                    text=get_locale(locale, TEXT_IDS.REPORT_WARNING_TEXT_ID))
+        message += f"Segnalazione:\n{user_report_message[8:]}\n"
+
+        context.bot.sendMessage(chat_id=config_map["admin_group"], text=message)
+        context.bot.sendMessage(chat_id=chat_id, text="Segnalazione inviata!")
+        return
+
+    context.bot.sendMessage(
+        chat_id=chat_id,
+        text="Errore. Invia un report con\n/report <messaggio>",
+    )
