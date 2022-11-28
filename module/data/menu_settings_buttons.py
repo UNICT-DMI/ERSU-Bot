@@ -37,7 +37,7 @@ def set_meal_button(update: Update, context: CallbackContext) -> None:
     menu_set.set_meal(query.message.chat_id, day, meal)  # type: ignore
     settings = menu_set.get_user_settings(query.message.chat_id)
 
-    if not set([1]).intersection(set(settings)):
+    if not any(value > 0 for value in settings):
         menu_set.delete_user(query.message.chat_id)
 
     keyboard = generate_keyboard(settings)
