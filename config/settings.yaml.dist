@@ -2,6 +2,8 @@ token: ""
 
 dev_group_chatid: 0
 admin_group: 0
+url_ersu: 'https://www.ersucatania.it/news/'
+news_channel: '@channelusername' 
 
 test:
   api_hash: ''
