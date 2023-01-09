@@ -14,7 +14,7 @@ def get_html(url) -> str:
     response = requests.get(url, timeout=10)
     return response.text
 
-def find_info(articles_list: list, article_number: int):
+def find_info(articles_list: list, article_number: int) -> tuple:
     #finds  the info of an article
     article = articles_list[article_number]
     href_article = article.find_all('a',href=True, title=True)
@@ -92,14 +92,16 @@ def publish_article(latest_article: list) -> None:
 
 
 def find_tester() -> None:
-    for i in range(15):
+    for i in range(NUMBER_OF_ARTICLES):
         article_info=find_info(articles, i)
-        print(article_info)
         print("article: ", i)
+        print("\n")
+        print(article_info)
         print("\n")
 
 url_ersu = data['url_ersu']
 url_html = get_html(url_ersu)
+NUMBER_OF_ARTICLES = 15
 date = time.now()
 locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") #converts the date in to another lang
 date_formatted = date.strftime("%-d %B %Y") #formats date
