@@ -6,7 +6,7 @@ from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, F
 from module.commands import start, help_cmd, report, reply, ufficio_ersu, menu, menu_settings
 from module.data.menu_settings_buttons import set_meal_button, reset_button, close_button
 from module.shared import config_map
-from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX
+from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX, REPORT
 
 
 def add_commands(up: Updater) -> None:
@@ -39,6 +39,7 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CommandHandler("help", help_cmd, Filters.chat_type.private))
     dp.add_handler(MessageHandler(Filters.regex(HELP) & Filters.chat_type.private, help_cmd))
     dp.add_handler(CommandHandler("report", report, Filters.chat_type.private))
+    dp.add_handler(MessageHandler(Filters.regex(REPORT) & Filters.chat_type.private, report))
     dp.add_handler(CommandHandler("ufficioersu", ufficio_ersu, Filters.chat_type.private))
     dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU) & Filters.chat_type.private, ufficio_ersu))
     dp.add_handler(CommandHandler("menu", menu, Filters.chat_type.private))
