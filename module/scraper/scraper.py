@@ -1,6 +1,7 @@
 """"scraper module"""
 from datetime import datetime as time
 import locale
+import sqlite3
 from bs4 import BeautifulSoup
 import requests
 import yaml
@@ -9,12 +10,12 @@ from yaml.loader import SafeLoader
 with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)
 
-def get_html(url):
+def get_html(url) -> str:
     response = requests.get(url, timeout=10)
     return response.text
 
 def find_info(articles_list: list, article_number: int):
-    #finds all the info of an article
+    #finds  the info of an article
     article = articles_list[article_number]
     href_article = article.find_all('a',href=True, title=True)
     title_article = href_article[1].get_text()
@@ -38,18 +39,57 @@ def find_info(articles_list: list, article_number: int):
     content_article = soup_article.find('div', {'class' : 'entry-content'})
     if content_article is not None:
         content_article = content_article.find('p')
-    else:
-        content_article = None
 
     return title_article , time_article, link_article, tag_article, content_article
 
-def check_db(title_article: str ,time_article: str):
-    print(title_article, "\n" ,time_article)
-    #if title not present inside table return true
+def connect_db() -> any:
+    try:
+        db_connect = sqlite3.connect("data/ERSU_DB.db")
+        print("connected to db")
 
+    except sqlite3.Error as error:
+        print("failed to connect ", error)
 
-def publish_article():
-    print("prova")
+    return db_connect
+
+def scrape_table(latest_article: list) -> None:
+    #connects to db and takes the value of the last row added to the db
+    try:
+        db_connect = connect_db()
+        db_cursor = db_connect.cursor()
+        db_fetch = """SELECT *
+                            FROM    Articles
+                            WHERE   ROWID = (SELECT MAX(ROWID)  FROM Articles);"""
+        db_cursor.execute(db_fetch)
+        last_added_article = db_cursor.fetchone()
+        print(last_added_article)
+
+        #checks if the article is already published if not then it adds it to the db and publish it
+
+        if  last_added_article is None or last_added_article[0] != latest_article[0]:
+            db_insert = """INSERT INTO Articles
+                            (Title, Time) 
+                            VALUES (?, ?);"""
+            db_data = (latest_article[0], latest_article[1])
+            db_cursor.execute(db_insert, db_data)
+            db_connect.commit()
+            print("Python Variables inserted successfully into Articles table")
+            db_cursor.close()
+            publish_article(latest_article)
+
+    finally:
+        if db_connect:
+            db_connect.close()
+            print("The SQLite connection is closed")
+
+def publish_article(latest_article: list) -> None:
+    article_title = latest_article[0]
+    article_time = latest_article[1]
+    article_link = latest_article[2]
+    article_tag = latest_article[3]
+    article_content = latest_article[4]
+    print(article_title ,article_time , article_link , article_tag , article_content)
+
 
 def find_tester() -> None:
     for i in range(15):
@@ -66,19 +106,5 @@ date_formatted = date.strftime("%-d %B %Y") #formats date
 
 soup = BeautifulSoup(url_html, 'html.parser')
 articles = soup.find_all('article')
-last_articles = find_info(articles,0)
-j=0
-
-while True:
-    j = j + 1
-    tms_article = last_articles[1]
-    title = last_articles[0]
-    last_articles = find_info(articles,j)
-
-    if  tms_article != date_formatted:
-        print("esco")
-        j=0
-        break
-
-    if check_db(title,tms_article):
-        publish_article()
+last_article = find_info(articles,0)
+scrape_table(last_article)
