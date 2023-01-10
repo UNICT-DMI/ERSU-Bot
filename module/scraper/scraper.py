@@ -10,7 +10,7 @@ from yaml.loader import SafeLoader
 with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)
 
-def get_html(url) -> str:
+def get_html(url: str) -> str:
     response = requests.get(url, timeout=10)
     return response.text
 
@@ -66,7 +66,6 @@ def add_to_db(title:str, article_time:str, cursor:any , connect:any ) -> None:
 def scrape_table(list_of_articles: list, time_stm: str) -> None:
     #connects to db and takes the value of the last row added to the db
     last_article = find_info(list_of_articles,0)
-    time_bool = True
     counter = 0
 
     try:
@@ -79,7 +78,7 @@ def scrape_table(list_of_articles: list, time_stm: str) -> None:
         if list_added_article == []:
             add_to_db(last_article[0], last_article[1], db_cursor, db_connect)
         #checks for teh articles that have the current date
-        while time_bool:
+        while True:
             if time_stm == find_info(list_of_articles, counter)[2]:
                 counter+=1
             else:
