@@ -45,6 +45,7 @@ def find_info(articles_list: list, article_number: int) -> tuple:
 def connect_db() -> any:
     try:
         db_connect = sqlite3.connect("data/ERSU_DB.db")
+        db_connect.text_factory = str
         print("connected to db")
 
     except sqlite3.Error as error:
@@ -52,37 +53,48 @@ def connect_db() -> any:
 
     return db_connect
 
-def scrape_table(latest_article: list) -> None:
+def add_to_db(title:str, article_time:str, cursor:any , connect:any ) -> None:
+    db_insert = """INSERT INTO Articles (Title, Time) VALUES (?, ?);"""
+    db_data = (title, article_time)
+    cursor.execute(db_insert, db_data)
+    connect.commit()
+    cursor.close()
+    print("added article and pub \n")
+    print(title, article_time)
+
+
+def scrape_table(list_of_articles: list, time_stm: str) -> None:
     #connects to db and takes the value of the last row added to the db
+    last_article = find_info(list_of_articles,0)
+    time_bool = True
+    counter = 0
+
     try:
         db_connect = connect_db()
         db_cursor = db_connect.cursor()
-        db_fetch = """SELECT *
-                            FROM    Articles
-                            WHERE   ROWID = (SELECT MAX(ROWID)  FROM Articles);"""
+        db_fetch = """SELECT title FROM Articles ORDER BY ROWID DESC LIMIT 10;"""
         db_cursor.execute(db_fetch)
-        last_added_article = db_cursor.fetchone()
-        print(last_added_article)
-
-        #checks if the article is already published if not then it adds it to the db and publish it
-
-        if  last_added_article is None or last_added_article[0] != latest_article[0]:
-            db_insert = """INSERT INTO Articles
-                            (Title, Time) 
-                            VALUES (?, ?);"""
-            db_data = (latest_article[0], latest_article[1])
-            db_cursor.execute(db_insert, db_data)
-            db_connect.commit()
-            print("Python Variables inserted successfully into Articles table")
-            db_cursor.close()
-            publish_article(latest_article)
-
+        list_added_article = [r[0] for r in db_cursor.fetchall()]
+        #if db is empty automatically adds the last article
+        if list_added_article == []:
+            add_to_db(last_article[0], last_article[1], db_cursor, db_connect)
+        #checks for teh articles that have the current date
+        while time_bool:
+            if time_stm == find_info(list_of_articles, counter)[2]:
+                counter+=1
+            else:
+                break
+        #verify that the articles are not already published
+        for i in range(counter):
+            article_to_publish = find_info(list_of_articles, i)
+            if article_to_publish[0] != list_added_article[i]:
+                add_to_db(article_to_publish[0], article_to_publish[1], db_cursor, db_connect)
+                publish_article(article_to_publish)
     finally:
         if db_connect:
             db_connect.close()
-            print("The SQLite connection is closed")
 
-def publish_article(latest_article: list) -> None:
+def publish_article(latest_article: tuple) -> None:
     article_title = latest_article[0]
     article_time = latest_article[1]
     article_link = latest_article[2]
@@ -91,22 +103,12 @@ def publish_article(latest_article: list) -> None:
     print(article_title ,article_time , article_link , article_tag , article_content)
 
 
-def find_tester() -> None:
-    for i in range(NUMBER_OF_ARTICLES):
-        article_info=find_info(articles, i)
-        print("article: ", i)
-        print("\n")
-        print(article_info)
-        print("\n")
-
-url_ersu = data['url_ersu']
-url_html = get_html(url_ersu)
-NUMBER_OF_ARTICLES = 15
-date = time.now()
-locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") #converts the date in to another lang
-date_formatted = date.strftime("%-d %B %Y") #formats date
-
-soup = BeautifulSoup(url_html, 'html.parser')
-articles = soup.find_all('article')
-last_article = find_info(articles,0)
-scrape_table(last_article)
+def scrape_news() -> None:
+    url_ersu = data['url_ersu']
+    url_html = get_html(url_ersu)
+    date = time.now()
+    locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") #converts the date in to another lang
+    date_formatted = date.strftime("%-d %B %Y") #formats date
+    soup = BeautifulSoup(url_html, 'html.parser')
+    articles = soup.find_all('article')
+    scrape_table(articles, date_formatted)
