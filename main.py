@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """Main module"""
 from telegram import BotCommand
-from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters, Dispatcher, Updater
+from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters, Updater, Dispatcher
 
 from module.commands import start, help_cmd, report, reply, ufficio_ersu, menu, menu_settings
 from module.data.menu_settings_buttons import set_meal_button, reset_button, close_button
+from module.scraper.scraper import scrape_news
 from module.shared import config_map
 from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX, REPORT
 
@@ -54,6 +55,14 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(CallbackQueryHandler(close_button, pattern="close_settings"))
 
 
+def add_jobs(disp: Dispatcher):
+    """Adds all the jobs to be scheduled to the dispatcher
+
+    Args:
+        disp: supplyed dispatcher
+    """
+    disp.job_queue.run_repeating(scrape_news, interval=300, first=1) # 300 = 5 minutes
+
 def main() -> None:
     """Main function"""
     updater = Updater(
@@ -61,6 +70,7 @@ def main() -> None:
     )
     add_commands(updater)
     add_handlers(updater.dispatcher)
+    add_jobs(updater.dispatcher)
     setup_db()
 
     updater.start_polling()
