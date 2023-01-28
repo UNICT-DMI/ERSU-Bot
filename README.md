@@ -32,6 +32,7 @@ services:
     image: ghcr.io/unict-dmi/ersu-bot
     volumes:
       - <your-settings.yaml>:/app/config/settings.yaml
+      - <your-ERSU_DB.db>:/app/data/ERSU_DB.db
     restart: unless-stopped
 ```
 
