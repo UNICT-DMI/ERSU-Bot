@@ -1,2 +1,3 @@
 python-telegram-bot==13.11
 pyyaml
+bs4
