@@ -31,12 +31,12 @@ def find_info(articles_list: list, article_number: int) -> tuple:
     #find the tag of the article and content
     html_article = get_html(link_article)
     soup_article = BeautifulSoup(html_article, 'html.parser')
-    tag_article = soup_article.find('a', {'rel' : 'tag' })
+    tag_article = soup_article.find_all('a', {'rel' : 'tag' })[-1]
 
     if tag_article is None:
-        tag_article = soup_article.find('a', {'rel' : 'v:url' }, {'property' : 'v:title'}, href=True).get_text()
+        tag_article = soup_article.find_all('a', {'rel' : 'v:url' }, {'property' : 'v:title'}, href=True)[-1].get_text()
     else:
-        tag_article = soup_article.find('a', {'rel' : 'tag' }).get_text()
+        tag_article = soup_article.find_all('a', {'rel' : 'tag' })[-1].get_text()
 
     content_article = soup_article.find('div', {'class' : 'entry-content'})
     if content_article is not None:
@@ -83,7 +83,7 @@ def scrape_table(list_of_articles: list, time_stm: str, context: CallbackContext
 
         # checks for the articles that have the current date
         while True:
-            if time_stm == find_info(list_of_articles, counter)[2]:
+            if time_stm == find_info(list_of_articles, counter)[1]:
                 counter += 1
             else:
                 break
