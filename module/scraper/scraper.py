@@ -1,5 +1,5 @@
 """"scraper module"""
-from datetime import datetime as time
+from datetime import datetime, timedelta
 import locale
 import sqlite3
 from bs4 import BeautifulSoup
@@ -16,19 +16,21 @@ def get_html(url: str) -> str:
     response = requests.get(url, timeout=10)
     return response.text
 
-def find_info(articles_list: list, article_number: int) -> tuple:
-    #finds  the info of an article
-    article = articles_list[article_number]
+def find_info(article: any) -> tuple:
+
+    # finds the info of an article
     href_article = article.find_all('a',href=True, title=True)
     title_article = href_article[1].get_text()
     div_article = article.find('div',{'class' : 'slide-meta' })
     link_article = article.find('a')
     link_article = link_article['href']
+
     if div_article is not None:
         time_article = div_article.find('time').get_text()
     else:
         time_article = None
-    #find the tag of the article and content
+
+    # find the tag of the article and content
     html_article = get_html(link_article)
     soup_article = BeautifulSoup(html_article, 'html.parser')
     tag_article = soup_article.find_all('a', {'rel' : 'tag' })[-1]
@@ -40,7 +42,11 @@ def find_info(articles_list: list, article_number: int) -> tuple:
 
     content_article = soup_article.find('div', {'class' : 'entry-content'})
     if content_article is not None:
-        content_article = content_article.find('p').text
+        paragraph = content_article.find('p')
+        if paragraph:
+            content_article = paragraph.text
+        else:
+            content_article = content_article.text
 
     return title_article, time_article, link_article, tag_article, content_article
 
@@ -55,43 +61,58 @@ def connect_db() -> sqlite3.Connection:
 
     return db_connect
 
-def add_to_db(title: str, article_time: str, cursor: sqlite3.Cursor , connect: sqlite3.Connection ) -> None:
-    db_insert = """INSERT INTO Articles (Title, Time) VALUES (?, ?);"""
+def add_to_db(title: str, article_time: str, cursor: sqlite3.Cursor, connect: sqlite3.Connection) -> None:
+    db_insert = "INSERT INTO Articles (Title, Time) VALUES (?, ?);"
     db_data = (title, article_time)
     cursor.execute(db_insert, db_data)
     connect.commit()
-    cursor.close()
     # print("added article and pub \n")
     # print(title, article_time)
 
-def scrape_table(list_of_articles: list, time_stm: str, context: CallbackContext) -> None:
-    #connects to db and takes the value of the last row added to the db
-    last_article = find_info(list_of_articles,0)
-    counter = 0
+def get_interval_dates(interval_days: int) -> list[str]:
+    dates = []
 
+    for i in range(interval_days):
+        date = datetime.now() - timedelta(days=i)
+        date_formatted = date.strftime("%-d %B %Y")
+        dates.append(date_formatted.lower())
+
+    return dates
+
+def get_recent_articles(list_of_articles: list) -> list:
+    recent_articles = []
+    dates = get_interval_dates(7)
+
+    for article in list_of_articles:
+        time_article = find_info(article)[1]
+        if time_article and time_article.lower() in dates:
+            recent_articles.append(article)
+
+    return recent_articles
+
+
+def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
+    # connects to db and takes the value of the last row added to the db
     try:
         db_connect = connect_db()
         db_cursor = db_connect.cursor()
-        db_fetch = """SELECT title FROM Articles ORDER BY ROWID DESC LIMIT 10;"""
+        db_fetch = "SELECT title FROM Articles ORDER BY ROWID DESC LIMIT 10;"
         db_cursor.execute(db_fetch)
-        list_added_article = [r[0] for r in db_cursor.fetchall()]
+        list_added_articles = [r[0] for r in db_cursor.fetchall()]
 
-        # if db is empty automatically adds the last article
-        if list_added_article == []:
-            add_to_db(last_article[0], last_article[1], db_cursor, db_connect)
-            publish_article(last_article, context)
-
-        # checks for the articles that have the current date
-        while True:
-            if time_stm == find_info(list_of_articles, counter)[1]:
-                counter += 1
-            else:
-                break
+        recent_articles = get_recent_articles(list_of_articles)
 
         # verify that the articles are not already published
-        for i in range(counter):
-            article_to_publish = find_info(list_of_articles, i)
-            if article_to_publish[0] != list_added_article[i]:
+        for recent_article in recent_articles:
+            already_published = False
+
+            article_to_publish = find_info(recent_article)
+            for added_article in list_added_articles:
+                if article_to_publish[0] == added_article:
+                    already_published = True
+                    break
+
+            if not already_published:
                 add_to_db(article_to_publish[0], article_to_publish[1], db_cursor, db_connect)
                 publish_article(article_to_publish, context)
 
@@ -113,11 +134,13 @@ def publish_article(latest_article: tuple, context: CallbackContext) -> None:
 
 
 def scrape_news(context: CallbackContext) -> None:
+    locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") # converts the date into another lang
+
     url_ersu = data['url_ersu']
     url_html = get_html(url_ersu)
-    date = time.now()
-    locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") #converts the date into another lang
-    date_formatted = date.strftime("%-d %B %Y") #formats date
+
     soup = BeautifulSoup(url_html, 'html.parser')
     articles = soup.find_all('article')
-    scrape_table(articles, date_formatted, context)
+    articles.reverse()
+
+    scrape_table(articles, context)
