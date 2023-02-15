@@ -12,16 +12,18 @@ from telegram import ParseMode
 with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)
 
+
 def get_html(url: str) -> str:
     response = requests.get(url, timeout=10)
     return response.text
 
+
 def find_info(article: any) -> tuple:
 
     # finds the info of an article
-    href_article = article.find_all('a',href=True, title=True)
+    href_article = article.find_all('a', href=True, title=True)
     title_article = href_article[1].get_text()
-    div_article = article.find('div',{'class' : 'slide-meta' })
+    div_article = article.find('div', {'class': 'slide-meta'})
     link_article = article.find('a')
     link_article = link_article['href']
 
@@ -33,14 +35,15 @@ def find_info(article: any) -> tuple:
     # find the tag of the article and content
     html_article = get_html(link_article)
     soup_article = BeautifulSoup(html_article, 'html.parser')
-    tag_article = soup_article.find_all('a', {'rel' : 'tag' })[-1]
+    tag_article = soup_article.find_all('a', {'rel': 'tag'})[-1]
 
     if tag_article is None:
-        tag_article = soup_article.find_all('a', {'rel' : 'v:url' }, {'property' : 'v:title'}, href=True)[-1].get_text()
+        tag_article = soup_article.find_all(
+            'a', {'rel': 'v:url'}, {'property': 'v:title'}, href=True)[-1].get_text()
     else:
-        tag_article = soup_article.find_all('a', {'rel' : 'tag' })[-1].get_text()
+        tag_article = soup_article.find_all('a', {'rel': 'tag'})[-1].get_text()
 
-    content_article = soup_article.find('div', {'class' : 'entry-content'})
+    content_article = soup_article.find('div', {'class': 'entry-content'})
     if content_article is not None:
         paragraph = content_article.find('p')
         if paragraph:
@@ -49,6 +52,7 @@ def find_info(article: any) -> tuple:
             content_article = content_article.text
 
     return title_article, time_article, link_article, tag_article, content_article
+
 
 def connect_db() -> sqlite3.Connection:
     try:
@@ -61,13 +65,15 @@ def connect_db() -> sqlite3.Connection:
 
     return db_connect
 
-def add_to_db(title: str, article_time: str, cursor: sqlite3.Cursor, connect: sqlite3.Connection) -> None:
-    db_insert = "INSERT INTO Articles (Title, Time) VALUES (?, ?);"
-    db_data = (title, article_time)
+
+def add_to_db(title: str, article_time: str, article_link: str, cursor: sqlite3.Cursor, connect: sqlite3.Connection) -> None:
+    db_insert = "INSERT INTO Articles (Title, Time, URL) VALUES (?, ?, ?);"
+    db_data = (title, article_time, article_link)
     cursor.execute(db_insert, db_data)
     connect.commit()
     # print("added article and pub \n")
     # print(title, article_time)
+
 
 def get_interval_dates(interval_days: int) -> list[str]:
     dates = []
@@ -78,6 +84,7 @@ def get_interval_dates(interval_days: int) -> list[str]:
         dates.append(date_formatted.lower())
 
     return dates
+
 
 def get_recent_articles(list_of_articles: list) -> list:
     recent_articles = []
@@ -96,9 +103,9 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
     try:
         db_connect = connect_db()
         db_cursor = db_connect.cursor()
-        db_fetch = "SELECT title FROM Articles ORDER BY ROWID DESC LIMIT 10;"
+        db_fetch = "SELECT title, URL FROM Articles ORDER BY ROWID DESC LIMIT 10;"
         db_cursor.execute(db_fetch)
-        list_added_articles = [r[0] for r in db_cursor.fetchall()]
+        list_added_articles = [[r[0], r[1]] for r in db_cursor.fetchall()]
 
         recent_articles = get_recent_articles(list_of_articles)
 
@@ -108,20 +115,23 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 
             article_to_publish = find_info(recent_article)
             for added_article in list_added_articles:
-                if article_to_publish[0] == added_article:
+                if article_to_publish[0] == added_article[0] or article_to_publish[2] == added_article[1]:
                     already_published = True
                     break
 
             if not already_published:
-                add_to_db(article_to_publish[0], article_to_publish[1], db_cursor, db_connect)
+                add_to_db(
+                    article_to_publish[0], article_to_publish[1], article_to_publish[2], db_cursor, db_connect)
                 publish_article(article_to_publish, context)
 
     finally:
         if db_connect:
             db_connect.close()
 
+
 def publish_article(latest_article: tuple, context: CallbackContext) -> None:
-    [article_title, article_time, article_link, article_tag, article_content] = latest_article
+    [article_title, article_time, article_link,
+        article_tag, article_content] = latest_article
     # print(article_title ,article_time , article_link , article_tag , article_content)
 
     message_content = f"<b>[{article_tag}]</b>"
@@ -130,11 +140,13 @@ def publish_article(latest_article: tuple, context: CallbackContext) -> None:
     message_content += "\n\n"
     message_content += f"<b>{article_title}</b>\n{article_content}"
 
-    context.bot.send_message(chat_id=data['news_channel'], text=message_content, parse_mode=ParseMode.HTML)
+    context.bot.send_message(
+        chat_id=data['news_channel'], text=message_content, parse_mode=ParseMode.HTML)
 
 
 def scrape_news(context: CallbackContext) -> None:
-    locale.setlocale(locale.LC_TIME, "it_IT.UTF-8") # converts the date into another lang
+    # converts the date into another lang
+    locale.setlocale(locale.LC_TIME, "it_IT.UTF-8")
 
     url_ersu = data['url_ersu']
     url_html = get_html(url_ersu)
