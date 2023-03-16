@@ -8,7 +8,8 @@ START_CMD_TEXT = "Benvenuto! Questo bot è stato realizzato dagli studenti del C
 
 HELP_CMD_TEXT = """Telegram ERSU Bot
 📚 /ufficioersu Fornisce informazioni sugli uffici ERSU Catania
-📬 /report Fornisce la possibilità di poter inviare una segnalazione ai Rappresentanti ERSU, riguardante qualsiasi disservizio, informazione, dubbi e domande"""
+📬 /report Fornisce la possibilità di poter inviare una segnalazione ai Rappresentanti ERSU, riguardante qualsiasi disservizio, informazione, dubbi e domande
+📖 /faq Lista delle risposte alle domande più frequenti sulla borsa di studio"""
 
 # 🍽 /menu Fornisce il menù per il prossimo pasto Mensa
 # ⚙️ /menu_settings Fornisce la possibilità di impostare quando vuoi ricevere automaticamente qualche ora prima il menù del prossimo pasto
