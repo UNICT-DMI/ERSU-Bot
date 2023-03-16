@@ -16,6 +16,7 @@ from .constants import (
     ERSU_LINK_REGEX,
     HELP,
     HELP_CMD_TEXT,
+    FAQ,
     MEALS,
     MENU_MENSA,
     MENU_SETTINGS,
