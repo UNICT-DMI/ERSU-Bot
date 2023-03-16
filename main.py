@@ -3,11 +3,11 @@
 from telegram import BotCommand
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters, Updater, Dispatcher
 
-from module.commands import start, help_cmd, report, reply, ufficio_ersu, menu, menu_settings
+from module.commands import start, help_cmd, report, reply, ufficio_ersu, menu, menu_settings, faq_cmd
 from module.data.menu_settings_buttons import set_meal_button, reset_button, close_button
 from module.scraper.scraper import scrape_news
 from module.shared import config_map
-from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX, REPORT
+from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX, REPORT, FAQ
 
 
 def add_commands(up: Updater) -> None:
@@ -24,6 +24,7 @@ def add_commands(up: Updater) -> None:
         BotCommand("ufficioersu", "ricevi i contatti dell'Ersu"),
         BotCommand("menu", "ricevi il menù del giorno"),
         BotCommand("menu_settings", "imposta quando ricevere il menù"),
+        BotCommand("faq", "risposte alle domande più frequenti"),
     ]
     up.bot.set_my_commands(commands=commands)
 
@@ -49,6 +50,8 @@ def add_handlers(dp: Dispatcher) -> None:
     dp.add_handler(MessageHandler(Filters.regex(MENU_SETTINGS) & Filters.chat_type.private, menu_settings))
     dp.add_handler(CommandHandler("reply", reply, Filters.reply & Filters.chat(config_map["admin_group"])))
     dp.add_handler(MessageHandler(Filters.reply & Filters.chat(config_map["admin_group"]), reply))
+    dp.add_handler(CommandHandler("faq", faq_cmd, Filters.chat_type.private))
+    dp.add_handler(MessageHandler(Filters.regex(FAQ) & Filters.chat_type.private, faq_cmd))
 
     dp.add_handler(CallbackQueryHandler(set_meal_button, pattern=DAYS_MEAL_REGEX))
     dp.add_handler(CallbackQueryHandler(reset_button, pattern="reset"))
