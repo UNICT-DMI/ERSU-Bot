@@ -6,3 +6,4 @@ from .start import start
 from .ufficio_ersu import ufficio_ersu
 from .menu import menu
 from .menu_settings import menu_settings
+from .faq import faq_cmd
