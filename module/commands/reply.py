@@ -1,8 +1,8 @@
 """/reply command"""
 import re
-from telegram import Update
+from telegram import Update, ParseMode
 from telegram.ext import CallbackContext
-from module.data.constants import CHAT_ID_REGEX
+from module.data.constants import CHAT_ID_REGEX, ANSWER_TO_REPORT_TEXT
 
 
 def reply(update: Update, context: CallbackContext) -> None:
@@ -37,7 +37,9 @@ def reply(update: Update, context: CallbackContext) -> None:
         if context.args:
             context.bot.sendMessage(
                 chat_id=reply_chat_id,
-                text=f"Messaggio dal rappresentante:\n{admin_reply_message[7:]}",
+                text=f"Messaggio dal rappresentante:\n{admin_reply_message[7:]}\n\n{ANSWER_TO_REPORT_TEXT}",
+                parse_mode=ParseMode.MARKDOWN,
+                disable_web_page_preview=True
             )
         else:
             context.bot.sendMessage(chat_id=chat_id, text="Per rispondere ad un messaggio utilizza /reply <messaggio>.")
@@ -45,7 +47,9 @@ def reply(update: Update, context: CallbackContext) -> None:
     else:
         context.bot.sendMessage(
             chat_id=reply_chat_id,
-            text=f"Messaggio dal rappresentante:\n{admin_reply_message}",
+            text=f"Messaggio dal rappresentante:\n{admin_reply_message}\n\n{ANSWER_TO_REPORT_TEXT}",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True
         )
 
     context.bot.sendMessage(chat_id=chat_id, text="Risposta inoltrata con successo!")

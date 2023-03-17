@@ -77,6 +77,9 @@ Martedì e Giovedì ore 8.00-10.00 e 13.00-14.00.
 • RESIDENZA SAN MARZANO
 📞 095330868"""
 
+ANSWER_TO_REPORT_TEXT = """Non hai risolto? Prenota un *appuntamento telefonico*
+da [qui](https://www.ersucatania.it/calendario-ufficio-assegnazione/)"""
+
 FAQ = "📖 FAQ"
 
 
