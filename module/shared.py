@@ -30,4 +30,3 @@ class Config(TypedDict):
 # config
 with open('config/settings.yaml', 'r', encoding='utf-8') as yaml_config:
     config_map: Config = yaml.load(yaml_config, Loader=yaml.SafeLoader)  # type: ignore
-
