@@ -23,8 +23,7 @@ def extrapolate_menu(w_s: openpyxl.worksheet.worksheet.Worksheet, table_colum:  
 
 
     for i in range (4, 15):
-        i_str = str(i)
-        current_course = w_s[table_char + i_str].value
+        current_course = w_s[table_char + str(i)].value
         menu_of_the_day.append(current_course)
 
 
@@ -59,17 +58,16 @@ def scroll_table(w_s , day:int) -> list:
             return "ERROR the day selected doesn't exist"
 
     return menu_of_the_day
+ 
 
-
-#fucntion for testing
 
 def print_function(menu_list: list) -> None:
-    for i in range(len(menu_list)):
-        print(menu_list[i])
+    for menu_item in menu_list:
+        print(menu_item)
 
+if __name__ == "__main__":
+    
 
-#Calls to the functions for testing
-table = open_menu(MENU_PATH)
-menu = scroll_table(table, 1)
-
-print_function(menu)
+    table = open_menu(MENU_PATH)
+    menu = scroll_table(table, 1)
+    print_function(menu)
