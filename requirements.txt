@@ -1,4 +1,6 @@
 python-telegram-bot==13.11
-pyyaml
-bs4
-requests
+pyyaml==6.0.1
+bs4==0.0.2
+requests==2.31.0
+urllib3==2.2.1
+
