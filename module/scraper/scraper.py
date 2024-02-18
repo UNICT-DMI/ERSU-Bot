@@ -22,7 +22,12 @@ def find_info(article: any) -> tuple:
 
     # finds the info of an article
     href_article = article.find_all('a', href=True, title=True)
-    title_article = href_article[1].get_text()
+
+    if len(href_article) > 1:
+        title_article = href_article[1].get_text()
+    else:
+        title_article = None
+
     div_article = article.find('div', {'class': 'slide-meta'})
     link_article = article.find('a')
     link_article = link_article['href']
