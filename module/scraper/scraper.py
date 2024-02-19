@@ -21,21 +21,22 @@ def get_html(url: str) -> str:
 def find_info(article: any) -> tuple:
 
     # finds the info of an article
-    href_article = article.find_all('a', href=True, title=True)
+    href_article = article.find_all("a", href=True)
 
     if len(href_article) > 1:
         title_article = href_article[1].get_text()
     else:
         title_article = None
 
-    div_article = article.find('div', {'class': 'slide-meta'})
     link_article = article.find('a')
     link_article = link_article['href']
 
+    time_article = None
+    div_article = article.find("div", {"class": "sow-entry-meta"})
     if div_article is not None:
-        time_article = div_article.find('time').get_text()
-    else:
-        time_article = None
+        time_el = div_article.find("time")
+        if time_el is not None:
+            time_article = div_article.find("time").get_text().strip()
 
     # find the tag of the article and content
     html_article = get_html(link_article)
@@ -48,7 +49,7 @@ def find_info(article: any) -> tuple:
     else:
         tag_article = soup_article.find_all('a', {'rel': 'tag'})[-1].get_text()
 
-    content_article = soup_article.find('div', {'class': 'entry-content'})
+    content_article = soup_article.find("section", {"class": "entry-content"})
     if content_article is not None:
         paragraph = content_article.find('p')
         if paragraph:
