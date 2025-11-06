@@ -8,7 +8,7 @@ import yaml
 from yaml.loader import SafeLoader
 from telegram.ext import CallbackContext
 from telegram import ParseMode
-from ..constants import DB_PATH
+from ..data.constants import DB_PATH
 
 with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)

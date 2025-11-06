@@ -1,7 +1,7 @@
 """Data storage and constants"""
 from .user_settings import UserSettings
 from .news import News
-from scraper.scraper import setup_articles
+from ..scraper.scraper import setup_articles
 from .constants import (
     SYMBOLS,
     EMPTY,
