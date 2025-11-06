@@ -1,6 +1,7 @@
 """Data storage and constants"""
 from .user_settings import UserSettings
 from .news import News
+from scraper.scraper import setup_articles
 from .constants import (
     SYMBOLS,
     EMPTY,
@@ -31,3 +32,4 @@ from .constants import (
 def setup_db() -> None:
     UserSettings().setup()
     News().setup()
+    setup_articles()
