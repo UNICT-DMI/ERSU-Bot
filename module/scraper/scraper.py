@@ -8,9 +8,20 @@ import yaml
 from yaml.loader import SafeLoader
 from telegram.ext import CallbackContext
 from telegram import ParseMode
+from ..data.constants import DB_PATH
 
 with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)
+
+
+def setup_articles() -> None:
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        cur.execute("""CREATE TABLE IF NOT EXISTS Articles(
+            "Title"	TEXT,
+            "Time"	TEXT,
+            "URL"	TEXT
+        )""")
 
 
 def get_html(url: str) -> str:
