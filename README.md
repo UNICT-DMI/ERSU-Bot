@@ -24,17 +24,13 @@ To start testing this bot you need to get a Telegram Bot's token:
 - Python3
 
 ## Docker-compose
-```yaml
-version: '2'
-services:
-  ersu-bot:
-    container_name:ersu-bot
-    image: ghcr.io/unict-dmi/ersu-bot
-    volumes:
-      - <your-settings.yaml>:/app/config/settings.yaml
-      - <your-ERSU_DB.db>:/app/data/ERSU_DB.db
-    restart: unless-stopped
+
+To run properly this project via docker compose you can copy `config/settings.yaml.dist` into `config/settings.yaml` and `data/ERSU_DB.db.dist` into `data/ERSU_DB.db` and launch the project via the following command:
+
+```bash
+docker compose up
 ```
+
 
 ## Testing with Docker-Compose
 To test the bot with docker compose on Windows follow these steps:

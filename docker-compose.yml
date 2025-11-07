@@ -1,0 +1,8 @@
+services:
+  ersu-bot:
+    container_name: ersu-bot
+    image: ghcr.io/unict-dmi/ersu-bot:main
+    volumes:
+      - ./config/settings.yaml:/ersubot/config/settings.yaml
+      - ./data/ERSU_DB.db:/ersubot/data/ERSU_DB.db
+    restart: unless-stopped
