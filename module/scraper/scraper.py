@@ -83,7 +83,13 @@ def connect_db() -> sqlite3.Connection:
     return db_connect
 
 
-def add_to_db(title: str, article_time: str, article_link: str, cursor: sqlite3.Cursor, connect: sqlite3.Connection) -> None:
+def add_to_db(
+        title: str,
+        article_time: str,
+        article_link: str,
+        cursor: sqlite3.Cursor,
+        connect: sqlite3.Connection
+    ) -> None:
     db_insert = "INSERT INTO Articles (Title, Time, URL) VALUES (?, ?, ?);"
     db_data = (title, article_time, article_link)
     cursor.execute(db_insert, db_data)
@@ -147,9 +153,9 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 
 
 def publish_article(latest_article: tuple, context: CallbackContext) -> None:
-    [article_title, article_time, article_link,
+    [article_title, _, article_link,
         article_tag, article_content] = latest_article
-    # print(article_title ,article_time , article_link , article_tag , article_content)
+    # print(article_title, article_time, article_link, article_tag, article_content)
 
     message_content = f"<b>[{article_tag}]</b>"
     message_content += "\n"
