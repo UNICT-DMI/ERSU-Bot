@@ -141,7 +141,6 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
                     already_published = True
                     break
             
-
             if not already_published:
                 add_to_db(
                     article_to_publish[0], article_to_publish[1], article_to_publish[2], db_cursor, db_connect)
