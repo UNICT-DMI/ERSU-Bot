@@ -34,7 +34,7 @@ def find_info(article: any) -> tuple:
     # finds the info of an article
     href_article = article.find_all("a", href=True)
 
-    if len(href_article) > 1:
+    if len(href_article) > 0:
         title_article = href_article[0].get_text()
     else:
         title_article = None
@@ -43,11 +43,10 @@ def find_info(article: any) -> tuple:
     link_article = link_article['href']
 
     time_article = None
-    div_article = article.find("div", {"class": "sow-entry-meta"})
-    if div_article is not None:
-        time_el = div_article.find("time")
+    if len(href_article) > 1:
+        time_el = href_article[1].find("time")
         if time_el is not None:
-            time_article = div_article.find("time").get_text().strip()
+            time_article = href_article[1].find("time").get_text().strip()
 
     # find the tag of the article and content
     html_article = get_html(link_article)
@@ -116,7 +115,6 @@ def get_recent_articles(list_of_articles: list) -> list:
     for article in list_of_articles:
         time_article = find_info(article)[1]
         if time_article and time_article.lower() in dates:
-            #QUI DENTRO L'ELEMENTO È GIÀ DUPLICATO
             recent_articles.append(article)
 
     return recent_articles
@@ -132,19 +130,17 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
         list_added_articles = [[r[0], r[1]] for r in db_cursor.fetchall()]
 
         recent_articles = get_recent_articles(list_of_articles)
-        print("la dim di recent_articles: ", len(recent_articles))
-        #IMPORTANTE, RECENT ARTICLES DUPLICA L'ULTIMO ELEMENTO
+
         # verify that the articles are not already published
         for recent_article in recent_articles:
             already_published = False
 
             article_to_publish = find_info(recent_article)
-            """
             for added_article in list_added_articles:
                 if article_to_publish[0] == added_article[0] or article_to_publish[2] == added_article[1]:
                     already_published = True
                     break
-            """
+            
 
             if not already_published:
                 add_to_db(
@@ -159,8 +155,7 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 def publish_article(latest_article: tuple, context: CallbackContext) -> None:
     [article_title, _, article_link,
         article_tag, article_content] = latest_article
-    article_time="null"
-    print(article_title, article_time, article_link, article_tag, article_content)
+    # print(article_title, _, article_link, article_tag, article_content)
 
     message_content = f"<b>[{article_tag}]</b>"
     message_content += "\n"
@@ -180,10 +175,7 @@ def scrape_news(context: CallbackContext) -> None:
     url_html = get_html(url_ersu)
 
     soup = BeautifulSoup(url_html, 'html.parser')
-    #print(soup)
-    #print("Ora effettuo eseguo find_all:")
     articles = soup.find_all('header', class_='sow-entry-header')
-    #articles = soup.find_all('article')
     articles.reverse()
-    #print(articles)
+
     scrape_table(articles, context)
