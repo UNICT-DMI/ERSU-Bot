@@ -33,10 +33,9 @@ def find_info(article: any) -> tuple:
 
     # finds the info of an article
     href_article = article.find_all("a", href=True)
-    print(href_article)
 
     if len(href_article) > 1:
-        title_article = href_article[1].get_text()
+        title_article = href_article[0].get_text()
     else:
         title_article = None
 
