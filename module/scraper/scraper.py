@@ -34,8 +34,8 @@ def find_info(article: any) -> tuple:
     # finds the info of an article
     href_article = article.find_all("a", href=True)
 
-    if len(href_article) > 1:
-        title_article = href_article[1].get_text()
+    if len(href_article) > 0:
+        title_article = href_article[0].get_text()
     else:
         title_article = None
 
@@ -43,11 +43,10 @@ def find_info(article: any) -> tuple:
     link_article = link_article['href']
 
     time_article = None
-    div_article = article.find("div", {"class": "sow-entry-meta"})
-    if div_article is not None:
-        time_el = div_article.find("time")
+    if len(href_article) > 1:
+        time_el = href_article[1].find("time")
         if time_el is not None:
-            time_article = div_article.find("time").get_text().strip()
+            time_article = href_article[1].find("time").get_text().strip()
 
     # find the tag of the article and content
     html_article = get_html(link_article)
@@ -155,7 +154,7 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 def publish_article(latest_article: tuple, context: CallbackContext) -> None:
     [article_title, _, article_link,
         article_tag, article_content] = latest_article
-    # print(article_title, article_time, article_link, article_tag, article_content)
+    # print(article_title, _, article_link, article_tag, article_content)
 
     message_content = f"<b>[{article_tag}]</b>"
     message_content += "\n"
@@ -175,7 +174,8 @@ def scrape_news(context: CallbackContext) -> None:
     url_html = get_html(url_ersu)
 
     soup = BeautifulSoup(url_html, 'html.parser')
-    articles = soup.find_all('article')
+    articles = soup.find_all('header', class_='sow-entry-header')
     articles.reverse()
 
     scrape_table(articles, context)
+    
