@@ -15,7 +15,7 @@ Please note that the commands and their answers are in Italian.
 To start testing this bot you need to get a Telegram Bot's token:
 - Go to Telegram and search for @BotFather
 - Start it using `/start`
-- Create a new bot using the `/newbot`command
+- Create a new bot using the `/newbot` command
 - Give it a name and a tag (the tag must end with `bot`)
 - Now copy the token it gives you
 
