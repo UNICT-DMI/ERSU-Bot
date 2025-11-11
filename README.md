@@ -54,8 +54,9 @@ To test the bot directly on your machine follow these steps:
 
 ## Credits
 - [Pierpaolo Pecoraio](https://github.com/Pierpaolo791)
-- [Davide Carnemolla](https://github.com/daxcpp)
+- [Davide Carnemolla](https://github.com/Herbrant)
 - [Stefano Borzì](https://github.com/Helias)
 - [Ernesto Casablanca](https://github.com/TendTo)
 - [Damiano Coppola](https://github.com/DefEnge)
+- [Giuseppe Tornello](https://github.com/Giuseppe-Tornello)
 - [Leonardo Mirabella](https://github.com/infra-blue)
