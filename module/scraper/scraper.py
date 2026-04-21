@@ -178,4 +178,3 @@ def scrape_news(context: CallbackContext) -> None:
     articles.reverse()
 
     scrape_table(articles, context)
-    
