@@ -1,6 +1,15 @@
 """Database class"""
+
 import sqlite3
-from .constants import DB_PATH, DAYS, MEALS, VALID_DAYS, VALID_MEALS, USER_EMPTY_SETTINGS
+
+from .constants import (
+    DAYS,
+    DB_PATH,
+    MEALS,
+    USER_EMPTY_SETTINGS,
+    VALID_DAYS,
+    VALID_MEALS,
+)
 
 
 class UserSettings:
@@ -14,8 +23,7 @@ class UserSettings:
     def setup(self) -> None:
         with sqlite3.connect(DB_PATH) as con:
             cur = con.cursor()
-            cur.execute(
-                """CREATE TABLE IF NOT EXISTS user_settings (
+            cur.execute("""CREATE TABLE IF NOT EXISTS user_settings (
                 chat_id INTEGER PRIMARY KEY,
                 monday_lunch INTEGER(1) NOT NULL DEFAULT 0 CHECK (monday_lunch IN (0, 1)),
                 monday_dinner INTEGER(1) NOT NULL DEFAULT 0 CHECK (monday_dinner IN (0, 1)),
@@ -37,8 +45,7 @@ class UserSettings:
 
                 sunday_lunch INTEGER(1) NOT NULL DEFAULT 0 CHECK (sunday_lunch IN (0, 1)),
                 sunday_dinner INTEGER(1) NOT NULL DEFAULT 0 CHECK (sunday_dinner IN (0, 1))
-                )"""
-            )
+                )""")
 
     def set_meal(self, chat_id: int, day: DAYS, meal: MEALS) -> None:
         if day not in VALID_DAYS:
@@ -60,11 +67,9 @@ class UserSettings:
         with sqlite3.connect(DB_PATH) as con:
             con.row_factory = self.row_factory
             cur = con.cursor()
-            result = cur.execute(
-                """SELECT chat_id
+            result = cur.execute("""SELECT chat_id
             FROM user_settings
-            """
-            )
+            """)
             return result.fetchall()
 
     def get_user_settings(self, chat_id: int) -> list[int]:

@@ -1,13 +1,43 @@
 # -*- coding: utf-8 -*-
 """Main module"""
-from telegram import BotCommand
-from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters, Updater, Dispatcher
 
-from module.commands import start, help_cmd, report, reply, ufficio_ersu, menu, menu_settings, faq_cmd
-from module.data.menu_settings_buttons import set_meal_button, reset_button, close_button
+from telegram import BotCommand
+from telegram.ext import (
+    CallbackQueryHandler,
+    CommandHandler,
+    Dispatcher,
+    Filters,
+    MessageHandler,
+    Updater,
+)
+
+from module.commands import (
+    faq_cmd,
+    help_cmd,
+    menu,
+    menu_settings,
+    reply,
+    report,
+    start,
+    ufficio_ersu,
+)
+from module.data import (
+    CONTACT_ERSU,
+    DAYS_MEAL_REGEX,
+    FAQ,
+    HELP,
+    MENU_MENSA,
+    MENU_SETTINGS,
+    REPORT,
+    setup_db,
+)
+from module.data.menu_settings_buttons import (
+    close_button,
+    reset_button,
+    set_meal_button,
+)
 from module.scraper.scraper import scrape_news
 from module.shared import config_map
-from module.data import setup_db, CONTACT_ERSU, HELP, MENU_MENSA, MENU_SETTINGS, DAYS_MEAL_REGEX, REPORT, FAQ
 
 
 def add_commands(up: Updater) -> None:
@@ -37,21 +67,51 @@ def add_handlers(dp: Dispatcher) -> None:
     """
 
     dp.add_handler(CommandHandler("start", start, Filters.chat_type.private))
-    dp.add_handler(CommandHandler("chatid", lambda u, c: u.message.reply_text(str(u.message.chat_id))))
+    dp.add_handler(
+        CommandHandler(
+            "chatid", lambda u, c: u.message.reply_text(str(u.message.chat_id))
+        )
+    )
     dp.add_handler(CommandHandler("help", help_cmd, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(HELP) & Filters.chat_type.private, help_cmd))
+    dp.add_handler(
+        MessageHandler(Filters.regex(HELP) & Filters.chat_type.private, help_cmd)
+    )
     dp.add_handler(CommandHandler("report", report, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(REPORT) & Filters.chat_type.private, report))
-    dp.add_handler(CommandHandler("ufficioersu", ufficio_ersu, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(CONTACT_ERSU) & Filters.chat_type.private, ufficio_ersu))
+    dp.add_handler(
+        MessageHandler(Filters.regex(REPORT) & Filters.chat_type.private, report)
+    )
+    dp.add_handler(
+        CommandHandler("ufficioersu", ufficio_ersu, Filters.chat_type.private)
+    )
+    dp.add_handler(
+        MessageHandler(
+            Filters.regex(CONTACT_ERSU) & Filters.chat_type.private, ufficio_ersu
+        )
+    )
     dp.add_handler(CommandHandler("menu", menu, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(MENU_MENSA) & Filters.chat_type.private, menu))
-    dp.add_handler(CommandHandler("menu_settings", menu_settings, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(MENU_SETTINGS) & Filters.chat_type.private, menu_settings))
-    dp.add_handler(CommandHandler("reply", reply, Filters.reply & Filters.chat(config_map["admin_group"])))
-    dp.add_handler(MessageHandler(Filters.reply & Filters.chat(config_map["admin_group"]), reply))
+    dp.add_handler(
+        MessageHandler(Filters.regex(MENU_MENSA) & Filters.chat_type.private, menu)
+    )
+    dp.add_handler(
+        CommandHandler("menu_settings", menu_settings, Filters.chat_type.private)
+    )
+    dp.add_handler(
+        MessageHandler(
+            Filters.regex(MENU_SETTINGS) & Filters.chat_type.private, menu_settings
+        )
+    )
+    dp.add_handler(
+        CommandHandler(
+            "reply", reply, Filters.reply & Filters.chat(config_map["admin_group"])
+        )
+    )
+    dp.add_handler(
+        MessageHandler(Filters.reply & Filters.chat(config_map["admin_group"]), reply)
+    )
     dp.add_handler(CommandHandler("faq", faq_cmd, Filters.chat_type.private))
-    dp.add_handler(MessageHandler(Filters.regex(FAQ) & Filters.chat_type.private, faq_cmd))
+    dp.add_handler(
+        MessageHandler(Filters.regex(FAQ) & Filters.chat_type.private, faq_cmd)
+    )
 
     dp.add_handler(CallbackQueryHandler(set_meal_button, pattern=DAYS_MEAL_REGEX))
     dp.add_handler(CallbackQueryHandler(reset_button, pattern="reset"))
@@ -64,12 +124,15 @@ def add_jobs(disp: Dispatcher):
     Args:
         disp: supplyed dispatcher
     """
-    disp.job_queue.run_repeating(scrape_news, interval=300, first=1) # 300 = 5 minutes
+    disp.job_queue.run_repeating(scrape_news, interval=300, first=1)  # 300 = 5 minutes
+
 
 def main() -> None:
     """Main function"""
     updater = Updater(
-        config_map["token"], request_kwargs={"read_timeout": 20, "connect_timeout": 20}, use_context=True
+        config_map["token"],
+        request_kwargs={"read_timeout": 20, "connect_timeout": 20},
+        use_context=True,
     )
     add_commands(updater)
     add_handlers(updater.dispatcher)

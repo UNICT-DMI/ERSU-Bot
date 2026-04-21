@@ -1,16 +1,19 @@
-""""scraper module"""
-from datetime import datetime, timedelta
+""" "scraper module"""
+
 import locale
 import sqlite3
-from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
+
 import requests
 import yaml
-from yaml.loader import SafeLoader
-from telegram.ext import CallbackContext
+from bs4 import BeautifulSoup
 from telegram import ParseMode
+from telegram.ext import CallbackContext
+from yaml.loader import SafeLoader
+
 from ..data.constants import DB_PATH
 
-with open('config/settings.yaml', 'r', encoding="UTF-8") as file:
+with open("config/settings.yaml", "r", encoding="UTF-8") as file:
     data = yaml.load(file, Loader=SafeLoader)
 
 
@@ -39,8 +42,8 @@ def find_info(article: any) -> tuple:
     else:
         title_article = None
 
-    link_article = article.find('a')
-    link_article = link_article['href']
+    link_article = article.find("a")
+    link_article = link_article["href"]
 
     time_article = None
     if len(href_article) > 1:
@@ -50,18 +53,19 @@ def find_info(article: any) -> tuple:
 
     # find the tag of the article and content
     html_article = get_html(link_article)
-    soup_article = BeautifulSoup(html_article, 'html.parser')
-    tag_article = soup_article.find_all('a', {'rel': 'tag'})[-1]
+    soup_article = BeautifulSoup(html_article, "html.parser")
+    tag_article = soup_article.find_all("a", {"rel": "tag"})[-1]
 
     if tag_article is None:
         tag_article = soup_article.find_all(
-            'a', {'rel': 'v:url'}, {'property': 'v:title'}, href=True)[-1].get_text()
+            "a", {"rel": "v:url"}, {"property": "v:title"}, href=True
+        )[-1].get_text()
     else:
-        tag_article = soup_article.find_all('a', {'rel': 'tag'})[-1].get_text()
+        tag_article = soup_article.find_all("a", {"rel": "tag"})[-1].get_text()
 
     content_article = soup_article.find("section", {"class": "entry-content"})
     if content_article is not None:
-        paragraph = content_article.find('p')
+        paragraph = content_article.find("p")
         if paragraph:
             content_article = paragraph.text
         else:
@@ -83,12 +87,12 @@ def connect_db() -> sqlite3.Connection:
 
 
 def add_to_db(
-        title: str,
-        article_time: str,
-        article_link: str,
-        cursor: sqlite3.Cursor,
-        connect: sqlite3.Connection
-    ) -> None:
+    title: str,
+    article_time: str,
+    article_link: str,
+    cursor: sqlite3.Cursor,
+    connect: sqlite3.Connection,
+) -> None:
     db_insert = "INSERT INTO Articles (Title, Time, URL) VALUES (?, ?, ?);"
     db_data = (title, article_time, article_link)
     cursor.execute(db_insert, db_data)
@@ -137,13 +141,21 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 
             article_to_publish = find_info(recent_article)
             for added_article in list_added_articles:
-                if article_to_publish[0] == added_article[0] or article_to_publish[2] == added_article[1]:
+                if (
+                    article_to_publish[0] == added_article[0]
+                    or article_to_publish[2] == added_article[1]
+                ):
                     already_published = True
                     break
 
             if not already_published:
                 add_to_db(
-                    article_to_publish[0], article_to_publish[1], article_to_publish[2], db_cursor, db_connect)
+                    article_to_publish[0],
+                    article_to_publish[1],
+                    article_to_publish[2],
+                    db_cursor,
+                    db_connect,
+                )
                 publish_article(article_to_publish, context)
 
     finally:
@@ -152,8 +164,7 @@ def scrape_table(list_of_articles: list, context: CallbackContext) -> None:
 
 
 def publish_article(latest_article: tuple, context: CallbackContext) -> None:
-    [article_title, _, article_link,
-        article_tag, article_content] = latest_article
+    [article_title, _, article_link, article_tag, article_content] = latest_article
     # print(article_title, _, article_link, article_tag, article_content)
 
     message_content = f"<b>[{article_tag}]</b>"
@@ -163,18 +174,19 @@ def publish_article(latest_article: tuple, context: CallbackContext) -> None:
     message_content += f"<b>{article_title}</b>\n{article_content}"
 
     context.bot.send_message(
-        chat_id=data['news_channel'], text=message_content, parse_mode=ParseMode.HTML)
+        chat_id=data["news_channel"], text=message_content, parse_mode=ParseMode.HTML
+    )
 
 
 def scrape_news(context: CallbackContext) -> None:
     # converts the date into another lang
     locale.setlocale(locale.LC_TIME, "it_IT.UTF-8")
 
-    url_ersu = data['url_ersu']
+    url_ersu = data["url_ersu"]
     url_html = get_html(url_ersu)
 
-    soup = BeautifulSoup(url_html, 'html.parser')
-    articles = soup.find_all('header', class_='sow-entry-header')
+    soup = BeautifulSoup(url_html, "html.parser")
+    articles = soup.find_all("header", class_="sow-entry-header")
     articles.reverse()
 
     scrape_table(articles, context)

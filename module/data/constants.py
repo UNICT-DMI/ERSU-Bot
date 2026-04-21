@@ -1,5 +1,6 @@
 # pylint: disable=line-too-long
 """Constants used throughout the application"""
+
 from typing import Literal
 
 DB_PATH = "data/ERSU_DB.db"
@@ -95,9 +96,19 @@ SYMBOLS = [CROSS, CHECK]
 EMPTY = 0
 USER_EMPTY_SETTINGS = [0] * 14
 
-DAYS = Literal["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+DAYS = Literal[
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
+]
 MEALS = Literal["lunch", "dinner"]
-VALID_DAYS = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+VALID_DAYS = (
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+)
 VALID_MEALS = ("lunch", "dinner")
 DAYS_TRANSLATION = {
     "monday": "Lunedì",
@@ -110,10 +121,14 @@ DAYS_TRANSLATION = {
 }
 
 # callbackquery handler data
-DAYS_MEAL_REGEX = r"(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)"
+DAYS_MEAL_REGEX = (
+    r"(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)"
+)
 
 # correct link format for ERSU news
-ERSU_LINK_REGEX = r"(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
+ERSU_LINK_REGEX = (
+    r"(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
+)
 
 # get chat_id from a report message
 CHAT_ID_REGEX = r"(id: )([0-9]+)"

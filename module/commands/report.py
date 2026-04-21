@@ -1,6 +1,8 @@
 """/report command"""
-from telegram import Update, ParseMode
+
+from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
+
 from module.shared import config_map
 
 

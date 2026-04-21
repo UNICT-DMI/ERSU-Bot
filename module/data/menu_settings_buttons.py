@@ -1,8 +1,10 @@
 """All keyboard utils for /menu_settings command"""
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
+
+from .constants import DAYS_TRANSLATION, EMPTY, SYMBOLS, USER_EMPTY_SETTINGS, VALID_DAYS
 from .user_settings import UserSettings
-from .constants import SYMBOLS, EMPTY, USER_EMPTY_SETTINGS, VALID_DAYS, DAYS_TRANSLATION
 
 
 def generate_keyboard(settings: list[int]) -> InlineKeyboardMarkup:
@@ -15,8 +17,12 @@ def generate_keyboard(settings: list[int]) -> InlineKeyboardMarkup:
         *[
             [
                 InlineKeyboardButton(DAYS_TRANSLATION[day], callback_data=EMPTY),
-                InlineKeyboardButton(SYMBOLS[settings[2 * i]], callback_data=f"{day}_lunch"),
-                InlineKeyboardButton(SYMBOLS[settings[2 * i + 1]], callback_data=f"{day}_dinner"),
+                InlineKeyboardButton(
+                    SYMBOLS[settings[2 * i]], callback_data=f"{day}_lunch"
+                ),
+                InlineKeyboardButton(
+                    SYMBOLS[settings[2 * i + 1]], callback_data=f"{day}_dinner"
+                ),
             ]
             for i, day in enumerate(VALID_DAYS)
         ],
@@ -42,7 +48,9 @@ def set_meal_button(update: Update, context: CallbackContext) -> None:
 
     keyboard = generate_keyboard(settings)
     context.bot.edit_message_reply_markup(
-        chat_id=query.message.chat_id, message_id=query.message.message_id, reply_markup=keyboard
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        reply_markup=keyboard,
     )
 
 
@@ -55,7 +63,9 @@ def reset_button(update: Update, context: CallbackContext) -> None:
 
     keyboard = generate_keyboard(USER_EMPTY_SETTINGS)
     context.bot.edit_message_reply_markup(
-        chat_id=query.message.chat_id, message_id=query.message.message_id, reply_markup=keyboard
+        chat_id=query.message.chat_id,
+        message_id=query.message.message_id,
+        reply_markup=keyboard,
     )
 
 
@@ -63,4 +73,6 @@ def close_button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     context.bot.answer_callback_query(callback_query_id=query.id)
 
-    context.bot.deleteMessage(chat_id=query.message.chat_id, message_id=query.message.message_id)
+    context.bot.deleteMessage(
+        chat_id=query.message.chat_id, message_id=query.message.message_id
+    )
