@@ -1,12 +1,20 @@
 """/start command"""
-from telegram import Update, ReplyKeyboardMarkup
+
+from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import CallbackContext
-from module.data import START_CMD_TEXT, CONTACT_ERSU, HELP, REPORT, FAQ # MENU_MENSA, MENU_SETTINGS,
+
+from module.data import (  # MENU_MENSA, MENU_SETTINGS,
+    CONTACT_ERSU,
+    FAQ,
+    HELP,
+    REPORT,
+    START_CMD_TEXT,
+)
 
 keyboard = [
     # [MENU_MENSA, MENU_SETTINGS],
     [CONTACT_ERSU, HELP],
-    [REPORT, FAQ]
+    [REPORT, FAQ],
 ]
 
 

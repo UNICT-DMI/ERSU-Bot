@@ -1,5 +1,7 @@
 """Test configuration"""
+
 import pytest
+
 from module.shared import config_map
 
 

@@ -2,3 +2,9 @@ pytest
 pytest-mock
 pytest-cov
 pylint
+flake8
+mypy
+black
+isort
+types-requests
+types-PyYAML

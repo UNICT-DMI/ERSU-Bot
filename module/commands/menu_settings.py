@@ -1,8 +1,10 @@
-""" /menu_settings command """
+"""/menu_settings command"""
+
 from telegram import Update
 from telegram.ext import CallbackContext
-from module.data.user_settings import UserSettings
+
 from module.data.menu_settings_buttons import generate_keyboard
+from module.data.user_settings import UserSettings
 
 
 def menu_settings(update: Update, _: CallbackContext) -> None:

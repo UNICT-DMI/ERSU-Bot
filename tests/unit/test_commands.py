@@ -1,12 +1,15 @@
 """Tests for the commands module"""
+
 # pylint: disable=missing-class-docstring,missing-function-docstring,too-few-public-methods,redefined-outer-name
 from datetime import datetime
+
 import pytest
 from pytest_mock import MockerFixture
-from telegram import Update, User, Message, Chat
+from telegram import Chat, Message, Update, User
 from telegram.ext import CallbackContext, Updater
+
 from module.commands import help_cmd, start, ufficio_ersu
-from module.data.constants import START_CMD_TEXT, HELP_CMD_TEXT, UFFICIO_ERSU_CMD_TEXT
+from module.data.constants import HELP_CMD_TEXT, START_CMD_TEXT, UFFICIO_ERSU_CMD_TEXT
 
 
 class FixtureRequest:
@@ -19,7 +22,8 @@ class FixtureRequest:
 def context(mocker: MockerFixture) -> CallbackContext:
     """Creates a Telegram CallbackContext.
     The bot is mocked, meaning every method used will not produce any effect.
-    This also allows to check how many time a method has been called and with what args"""
+    This also allows to check how many time a method has been called and with what args
+    """
     updater = Updater(token="1234567890:abcdefghijklmnopqrstuvwxyz123456789")
     dispatcher = updater.dispatcher
     dispatcher.bot = mocker.Mock(return_value=None)

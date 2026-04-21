@@ -1,6 +1,8 @@
 """/report command"""
-from telegram import Update, ParseMode
+
+from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
+
 from module.shared import config_map
 
 
@@ -36,7 +38,9 @@ def report(update: Update, context: CallbackContext) -> None:
 
     context.bot.sendMessage(
         chat_id=chat_id,
-        # pylint: disable=line-too-long
-        text="Per inviare una richiesta o una segnalazione ai Rappresentanti ERSU \nscrivi il comando /report _inserisci qui la segnalazione._",
+        text=(
+            "Per inviare una richiesta o una segnalazione ai Rappresentanti ERSU \n"
+            "scrivi il comando /report _inserisci qui la segnalazione._"
+        ),
         parse_mode=ParseMode.MARKDOWN,
     )

@@ -1,18 +1,26 @@
-# pylint: disable=line-too-long
 """Constants used throughout the application"""
+
 from typing import Literal
 
 DB_PATH = "data/ERSU_DB.db"
 
-START_CMD_TEXT = "Benvenuto! Questo bot è stato realizzato dagli studenti del Corso di Laurea in Informatica al fine di fornire uno strumento di supporto per chi usufruisce dei servizi ERSU. Per scoprire cosa puoi fare usa /help"
+START_CMD_TEXT = (
+    "Benvenuto! Questo bot è stato realizzato dagli studenti del Corso di Laurea in Informatica "
+    "al fine di fornire uno strumento di supporto per chi usufruisce dei servizi ERSU. "
+    "Per scoprire cosa puoi fare usa /help"
+)
 
-HELP_CMD_TEXT = """Telegram ERSU Bot
-📚 /ufficioersu Fornisce informazioni sugli uffici ERSU Catania
-📬 /report Fornisce la possibilità di poter inviare una segnalazione ai Rappresentanti ERSU, riguardante qualsiasi disservizio, informazione, dubbi e domande
-📖 /faq Lista delle risposte alle domande più frequenti sulla borsa di studio"""
+HELP_CMD_TEXT = (
+    "Telegram ERSU Bot\n"
+    "📚 /ufficioersu Fornisce informazioni sugli uffici ERSU Catania\n"
+    "📬 /report Fornisce la possibilità di poter inviare una segnalazione ai Rappresentanti "
+    "ERSU, riguardante qualsiasi disservizio, informazione, dubbi e domande\n"
+    "📖 /faq Lista delle risposte alle domande più frequenti sulla borsa di studio"
+)
 
 # 🍽 /menu Fornisce il menù per il prossimo pasto Mensa
-# ⚙️ /menu_settings Fornisce la possibilità di impostare quando vuoi ricevere automaticamente qualche ora prima il menù del prossimo pasto
+# ⚙️ /menu_settings Fornisce la possibilità di impostare quando vuoi ricevere
+# automaticamente qualche ora prima il menù del prossimo pasto
 
 UFFICIO_ERSU_CMD_TEXT = """ERSU CATANIA
 📍 Via Etnea, 570
@@ -95,9 +103,19 @@ SYMBOLS = [CROSS, CHECK]
 EMPTY = 0
 USER_EMPTY_SETTINGS = [0] * 14
 
-DAYS = Literal["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+DAYS = Literal[
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
+]
 MEALS = Literal["lunch", "dinner"]
-VALID_DAYS = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+VALID_DAYS = (
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+)
 VALID_MEALS = ("lunch", "dinner")
 DAYS_TRANSLATION = {
     "monday": "Lunedì",
@@ -110,10 +128,14 @@ DAYS_TRANSLATION = {
 }
 
 # callbackquery handler data
-DAYS_MEAL_REGEX = r"(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)"
+DAYS_MEAL_REGEX = (
+    r"(monday|tuesday|wednesday|thursday|friday|saturday|sunday)+?_(dinner|lunch)"
+)
 
 # correct link format for ERSU news
-ERSU_LINK_REGEX = r"(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
+ERSU_LINK_REGEX = (
+    r"(https:\\/\\/www\\.ersucatania\\.it\\/)([a-zA-Z0-9]+)(\\-[a-zA-Z0-9]+)*\\/"
+)
 
 # get chat_id from a report message
 CHAT_ID_REGEX = r"(id: )([0-9]+)"
