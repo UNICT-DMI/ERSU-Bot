@@ -6,3 +6,5 @@ flake8
 mypy
 black
 isort
+types-requests
+types-PyYAML

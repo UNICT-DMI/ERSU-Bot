@@ -3,6 +3,7 @@
 import locale
 import sqlite3
 from datetime import datetime, timedelta
+from typing import Any
 
 import requests
 import yaml
@@ -32,7 +33,7 @@ def get_html(url: str) -> str:
     return response.text
 
 
-def find_info(article: any) -> tuple:
+def find_info(article: Any) -> tuple:
 
     # finds the info of an article
     href_article = article.find_all("a", href=True)
